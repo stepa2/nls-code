@@ -10,3 +10,5 @@ end
 include("servermenu.lua")
 
 include("gamemodes.lua")
+
+include("zadalbot.lua")
