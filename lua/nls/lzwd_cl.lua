@@ -10,6 +10,13 @@ local function PrintChat(msg)
     end
 end
 
+local function PrintError(msg)
+    PrintChat("LZWD > "..msg)
+    net.Start("LzWD_ClientError")
+        net.WriteString(msg)
+    net.SendToServer()
+end
+
 local WorkshopAddons = {}
 local WorkshopAddonsInfo = {}
 local NewWorkshopAddonsNoInfoCount = 0
@@ -58,7 +65,7 @@ StartWorkshopDownload = function(count)
             
             if info.error ~= nil then
                 to_remove[workshopid] = true
-                PrintChat("LzWD > Ошибка #"..tostring(info.error).." при получении информации об аддоне "..workshopid)
+                PrintError("Ошибка #"..tostring(info.error).." при получении информации об аддоне "..workshopid)
             else
                 WorkshopAddonsInfo[workshopid] = info
                 --PrintChat("LzWD > Получена информация об аддоне #"..workshopid.." ("..info.title..")")
@@ -113,7 +120,7 @@ local function DownloadAddon(workshopid, callback)
             callback(path)
         else
             timer.Simple(2, function()
-                PrintChat("LzWD > Ошибка при скачивании аддона #"..workshopid..", перезапуск закачки")
+                PrintError("Ошибка при скачивании аддона #"..workshopid..", перезапуск закачки")
                 DownloadAddon(workshopid, callback)
             end)
         end
@@ -163,7 +170,7 @@ MountGMAs = function(addons)
         local wid = addon.WorkshopId
         
         if not success then
-            PrintChat("LzWD > Ошибка при монтировании аддона #"..wid.." ("..WorkshopAddonsInfo[wid].title..")")
+            PrintError("Ошибка при монтировании аддона #"..wid.." ("..WorkshopAddonsInfo[wid].title..")")
         else
             WorkshopAddons[wid] = true
         end

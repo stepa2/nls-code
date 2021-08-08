@@ -1,6 +1,7 @@
 print("LzWD > Serverside init")
 
 util.AddNetworkString("LzWD_WorkshopAddons")
+util.AddNetworkString("LzWD_ClientError")
 
 assert(istable(LzWDAddons), "lua/autorun/server/stpm64_lzwd_sv_cfg.lua did not executed before this file")
 
@@ -35,6 +36,10 @@ concommand.Add("lzwd_requestaddons", function(requester)
                                         -- writing addon id as string is only futureproof way
         end
     net.Send(requester)
+end)
+
+net.Receive("LzWD_ClientError", function(len, ply)
+    MsgN("LzWD > ",ply:Nick()," has an error: ", net.ReadString())
 end)
 
 print("LzWD > Serverside init finished")
