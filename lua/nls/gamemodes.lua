@@ -70,7 +70,7 @@ if SERVER then
     
         local damagerPly = damager
     
-        if not damagerPly:IsPlayer() then
+        if IsValid(damagerPly) and not damagerPly:IsPlayer() then
             damagerPly = damagerPly:GetOwner()
         end
     
