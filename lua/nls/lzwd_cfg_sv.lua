@@ -37,6 +37,7 @@ LzWDAddons = {
     "1525572545", -- vFire Flamethrower
     "1615992780", -- ProWolf's Zone Tool
     "1919689921", -- JMod
+    "2546685571", -- Laser STool ( Improved )
 }
 
 print("LzWD > Config init finished")
