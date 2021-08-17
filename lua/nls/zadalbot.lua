@@ -96,6 +96,8 @@ if SERVER then
     end)
     
     hook.Add("PlayerSay", "NLS_ZadalBot", function(ply, msg)
+        if msg[1] == "!" or msg[1] == "~" then return end
+
         SendDataToBot({
             Type = "GameMessage",
             Sender = ply:Nick(),
