@@ -16,7 +16,7 @@ Gamemodes.Types = {
 if SERVER then
     local PlayerGamemodes = {}
 
-    local function SetGamemode(ply, gm)
+    function Gamemodes.Set(ply, gm)
         if gm == PlayerGamemodes[ply] then
             return
         end
@@ -35,15 +35,15 @@ if SERVER then
     end
 
     concommand.Add("nls_changemode", function(ply, cmd, args)
-        SetGamemode(ply, Gamemodes.Types[args[1] or ""] or Gamemodes.Types.PVP)
+        Gamemodes.Set(ply, Gamemodes.Types[args[1] or ""] or Gamemodes.Types.PVP)
     end, nil, nil, 0)
 
     hook.Add("PlayerInitialSpawn", "NLS_Gamemodes", function(ply)
-        SetGamemode(ply, Gamemodes.Types.PVP)
+        Gamemodes.Set(ply, Gamemodes.Types.PVP)
     end)
 
     hook.Add("PlayerDisconnected", "NLS_Gamemodes", function(ply)
-        SetGamemode(ply, nil)
+        Gamemodes.Set(ply, nil)
     end)
 else
     function NLS.Gamemodes.Get(ply)
