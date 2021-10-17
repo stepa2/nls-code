@@ -17,11 +17,64 @@ local function PrintError(msg)
     net.SendToServer()
 end
 
+local SAVED_ADDONS_DATA_FILE = "nls/lzwd/desc.json"
+local SAVED_ADDONS_CACHE_DIR = "nls/lzwd/"
+
+local SavedAddonsData = {}
+
+
 local WorkshopAddons = {}
 local WorkshopAddonsInfo = {}
 local NewWorkshopAddonsNoInfoCount = 0
 
 local DownloadInProcess = false
+
+-- Caching functions
+
+file.CreateDir("nls/lzwd")
+
+local function ReadCacheDesc()
+    local data = file.Read(SAVED_ADDONS_DATA_FILE,"DATA")
+
+    if data == nil then return end
+
+    SavedAddonsData = util.JSONToTable(data) or {}
+
+    local to_remove = {}
+    for gma, _ in pairs(SavedAddonsData) do
+        if not file.Exists(gma, "DATA") then
+            table.insert(to_remove, gma)
+        end
+    end
+
+    for _, remove in ipairs(to_remove) do
+        SavedAddonsData[remove] = nil
+    end
+end
+
+local function WriteCacheDesc()
+    file.Write(SAVED_ADDONS_DATA_FILE, util.TableToJSON(SavedAddonsData, true))
+end
+
+ReadCacheDesc()
+concommand.Add("lzwd_reload_cachedesc", ReadCacheDesc)
+
+local function CacheFile(id, data, timestamp)
+    file.Write(SAVED_ADDONS_CACHE_DIR..id..".gma.dat", data)
+
+    SavedAddonsData[id] = timestamp
+    WriteCacheDesc()
+end
+
+local function GetCachedFilePath(id, timestamp)
+    local cache_timestamp = SavedAddonsData[id]
+
+    if cache_timestamp == nil or timestamp > cache_timestamp then
+        return nil
+    end
+
+    return "data/"..SAVED_ADDONS_CACHE_DIR..id..".gma.dat"
+end
 
 -- Functions
 local StartWorkshopDownload
@@ -85,25 +138,44 @@ end
 OnAllInfoReceived = function()
     local addons = {}
 
-    for wid, status in pairs(WorkshopAddons) do
-        if status == false then
-            addons[wid] = {Size = WorkshopAddonsInfo[wid].size, Downloaded = false}
+    for wid, is_loaded in pairs(WorkshopAddons) do
+        if is_loaded == false then
+            addons[wid] = {
+                Size = WorkshopAddonsInfo[wid].size,
+                UpdateTime = WorkshopAddonsInfo[wid].updated,
+                Actual = is_loaded
+            }
         end
     end
 
     for i, data in ipairs(engine.GetAddons()) do
-        local addon = addons[data.wsid]    
+        local addon = addons[data.wsid]
 
         if addon then
-            addon.Downloaded = true
+            addon.Actual = true
             addon.GMA = data.file
         end
     end
-    
+
+    for wid, addon in pairs(addons) do
+        local cached_gma = GetCachedFilePath(wid, addon.UpdateTime)
+
+        if cached_gma then
+            addon.Actual = true
+            addon.GMA = cached_gma
+        end
+    end
+
     local addonsBySize = {}
 
     for wid, data in SortedPairsByMemberValue(addons, "Size", false) do
-        table.insert(addonsBySize, { WorkshopId = wid, Size = data.Size, Downloaded = data.Downloaded, GMA = data.GMA})
+        table.insert(addonsBySize, {
+            WorkshopId = wid,
+            Size = data.Size,
+            Actual = data.Actual,
+            GMA = data.GMA,
+            UpdateTime = data.UpdateTime
+        })
     end
 
 
@@ -115,9 +187,9 @@ end
 -- So it will retry downloading over and over
 -- callback = function(path)
 local function DownloadAddon(workshopid, callback)
-    steamworks.DownloadUGC(workshopid, function(path)
+    steamworks.DownloadUGC(workshopid, function(path, gma_file)
         if path ~= nil then
-            callback(path)
+            callback(path, gma_file)
         else
             timer.Simple(2, function()
                 PrintError("Ошибка при скачивании аддона #"..workshopid..", перезапуск закачки")
@@ -130,18 +202,19 @@ end
 
 LoadAllAddons = function(addonsBySize)
     local remainingCount = #addonsBySize
-    local anyNonDownloaded = false
+    local anyNonActual = false
 
 
     for i, data in ipairs(addonsBySize) do
         local wid = data.WorkshopId
 
-        if not data.Downloaded then
-            anyNonDownloaded = true
+        if not data.Actual then
+            anyNonActual = true
 
-            DownloadAddon(wid, function(path)
+            DownloadAddon(wid, function(path, gma_file)
                 data.GMA = path
-                data.Downloaded = true
+                data.Actual = true
+                CacheFile(wid, gma_file:Read(gma_file:Size()), data.UpdateTime)
             
                 remainingCount = remainingCount - 1
                 --PrintChat("LzWD > Скачен аддон #"..wid.." ("..WorkshopAddonsInfo[wid].title..")")
@@ -156,7 +229,7 @@ LoadAllAddons = function(addonsBySize)
         end
     end
 
-    if not anyNonDownloaded then
+    if not anyNonActual then
         MountGMAs(addonsBySize)
     end
 end
@@ -177,6 +250,8 @@ MountGMAs = function(addons)
     end
 
     DownloadInProcess = false
+
+    WriteCacheDesc()
 
     PrintChat("LzWD > Завершено!")
 end
