@@ -22,7 +22,6 @@ language.Add("NLS_Mode_RP_Desc", "Ролевой режим - ещё не реа
 
 language.Add("NLS_Category_Info", "Информация")
 language.Add("NLS_CategoryInfo_Links", "Ссылки")
-language.Add("NLS_CategoryInfo_Rules", "Правила")
 
 hook.Add("AddToolMenuTabs", "NLS_Servermenu", function()
     spawnmenu.AddToolTab("aNLS", "#SERVER_NAME", "icon16/server.png")
@@ -58,9 +57,7 @@ hook.Add("PopulateToolMenu", "NLS_Servermenu", function()
         panel:Button("Коллекция сервера").DoClick = function(self)
             gui.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=2541972502")
         end
-    end)
 
-    spawnmenu.AddToolMenuOption("aNLS", "Info", "Rules", "#NLS_CategoryInfo_Rules", nil, nil, function(panel)
-        panel:Help("<Правила ещё не написаны>")
+        panel:Help("Правила сервера в discord-группе (канал 'правила')")
     end)
 end)
