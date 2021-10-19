@@ -30,13 +30,11 @@ LzWDAddons = {
 
     -- For resources, lua installed locally
     "160250458", -- Wiremod
-    "839699169", -- Blueprints tool
     "420325009", -- MeshCloth
     "104691717", -- PAC3
     "1525218777", -- vFire - Dynamic Fire for Garry's Mod
     "1525572545", -- vFire Flamethrower
     "1615992780", -- ProWolf's Zone Tool
-    "1919689921", -- JMod
 }
 
 print("LzWD > Config init finished")
