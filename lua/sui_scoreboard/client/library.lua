@@ -16,24 +16,9 @@ Version 2.6.3 - 2021-07-01 06:14 PM(UTC -03:00)
 
 ]]--
 
--- Kick player
-Scoreboard.kick = function (ply)
+Scoreboard.RunULXCommand = function (ply, command, args)
   if ply:IsValid() then 
-    LocalPlayer():ConCommand( 'ulx kick "'.. ply:Nick().. '"' )
-  end
-end
-
--- Permanent ban player
-Scoreboard.pBan = function(ply) 
-  if ply:IsValid() then 
-    LocalPlayer():ConCommand( 'ulx ban "'.. ply:Nick().. '" 0' ) 
-  end
-end
-
--- Ban player
-Scoreboard.ban = function(ply) 
-  if ply:IsValid() then
-    LocalPlayer():ConCommand( 'ulx ban "'.. ply:Nick().. '" 60' )    
+    LocalPlayer():ConCommand( 'ulx '..command..' "'..ply:Nick()..'" '..args )
   end
 end
 

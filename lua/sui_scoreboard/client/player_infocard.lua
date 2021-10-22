@@ -29,9 +29,37 @@ function PANEL:Init()
 	self.InfoLabels[ 2 ] = {}
 	self.InfoLabels[ 3 ] = {}
 
-	self.btnKick = vgui.Create( "suiplayerkickbutton", self )
-	self.btnBan = vgui.Create( "suiplayerbanbutton", self )
-	self.btnPBan = vgui.Create( "suiplayerpermbanbutton", self )
+	self.btnKick = vgui.Create( "suispawnmenuadminbutton", self )
+	self.btnKick.Text = "Кик"
+	self.btnBan = vgui.Create( "suispawnmenuadminbutton", self )
+	self.btnBan.Text = "Бан ∞"
+	self.btnJail = vgui.Create( "suispawnmenuadminbutton", self )
+	self.btnJail.Text = "Тюрьма"
+	self.btnGoto = vgui.Create( "suispawnmenuadminbutton", self )
+	self.btnGoto.Text = "Goto"
+	self.btnBring = vgui.Create( "suispawnmenuadminbutton", self )
+	self.btnBring.Text = "Bring"
+
+	
+	self.btnKick.DoClick = function () 
+		Scoreboard.RunULXCommand( self.Player, "kick", "" ) 
+	end
+
+	self.btnPBan.DoClick = function () 
+		Scoreboard.RunULXCommand( self.Player, "ban", "0" ) 
+	end
+
+	self.btnJail.DoClick = function () 
+		Scoreboard.RunULXCommand( self.Player, "jail", "5" ) 
+	end
+
+	self.btnGoto.DoClick = function ()
+		Scoreboard.RunULXCommand( self.Player, "goto" ) 
+	end
+	
+	self.btnBring.DoClick = function ()
+		Scoreboard.RunULXCommand( self.Player, "bring" ) 
+	end
 end
 
 --- SetInfo
@@ -130,29 +158,27 @@ function PANEL:PerformLayout()
 		end
 	end
 
-	if not LocalPlayer():IsAdmin() then
-		self.btnKick:SetVisible( false )
-		self.btnBan:SetVisible( false )
-		self.btnPBan:SetVisible( false )
-	else
-		self.btnKick:SetVisible( true )
-		self.btnBan:SetVisible( true )
-		self.btnPBan:SetVisible( true )
 
-		self.btnKick:SetPos( self:GetWide() - 46 - 4, 85 - (22 * 2) )
-		self.btnKick:SetSize( 46, 20 )
+	--self.btnKick:SetVisible( true )
+	--self.btnBan:SetVisible( true )
+	--self.btnPBan:SetVisible( true )
 
-		self.btnBan:SetPos( self:GetWide() - 46 - 4, 85 - (22 * 1) )
-		self.btnBan:SetSize( 46, 20 )
+	self.btnKick:SetPos( self:GetWide() - 46 - 4, 85 - (22 * 2) )
+	self.btnKick:SetSize( 46, 20 )
 
-		self.btnPBan:SetPos( self:GetWide() - 46 - 4, 85 - (22 * 0) )
-		self.btnPBan:SetSize( 46, 20 )
+	self.btnJail:SetPos( self:GetWide() - 46 - 4, 85 - (22 * 1) )
+	self.btnJail:SetSize( 46, 20 )
 
-		self.btnKick.DoClick = function () Scoreboard.kick( self.Player ) end
-		self.btnPBan.DoClick = function () Scoreboard.pBan( self.Player ) end
-		
-		self.btnBan.DoClick = function () Scoreboard.ban( self.Player ) end
-	end
+	self.btnPBan:SetPos( self:GetWide() - 46 - 4, 85 - (22 * 0) )
+	self.btnPBan:SetSize( 46, 20 )
+
+	self.btnGoto:SetPos( self:GetWide() - 46 - 48 - 4, 85 - (22 * 2) )
+	self.btnGoto:SetSize( 46, 20 )
+
+	self.btnBring:SetPos( self:GetWide() - 46 - 48 - 4, 85 - (22 * 2) )
+	self.btnBring:SetSize( 46, 20 )
+	
+	--self.btnBan.DoClick = function () Scoreboard.ban( self.Player ) end
 end
 
 --- Paint
