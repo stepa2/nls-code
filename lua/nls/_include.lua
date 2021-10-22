@@ -26,3 +26,9 @@ if SERVER then
 else
     include("entity_infobox_cl.lua")
 end
+
+if SERVER then
+    AddCSLuaFile("player_3dnick_cl.lua")
+else
+    include("player_3dnick_cl.lua")
+end
