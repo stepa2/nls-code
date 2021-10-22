@@ -51,7 +51,7 @@ hook.Add("PopulateToolMenu", "NLS_Servermenu", function()
 
     spawnmenu.AddToolMenuOption("aNLS", "Info", "Links", "#NLS_CategoryInfo_Links", nil, nil, function(panel)
         panel:Button("Discord-группа").DoClick = function(self)
-            gui.OpenURL("https://discord.gg/hYjDSampue")
+            gui.OpenURL("https://discord.gg/pPaeQpE5Xd")
         end
 
         panel:Button("Коллекция сервера").DoClick = function(self)
