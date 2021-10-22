@@ -121,6 +121,10 @@ end
 
 
 local function AllowNoclip(ply)
+    if ply:IsAdmin() then
+        return true
+    end
+
     local plyMode = NLS.Gamemodes.Get(ply)
 
     if plyMode == Gamemodes.Types.BUILD then
@@ -128,7 +132,7 @@ local function AllowNoclip(ply)
     end
 
     if plyMode == Gamemodes.Types.RP then
-        -- TODO: roleplay custom rulse (GMing)
+        -- TODO: roleplay custom rules (GMing)
 
         return false
     end
