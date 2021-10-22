@@ -137,6 +137,12 @@ if SERVER then
             Reason = data.reason
         })
     end)
+
+    hook.Add("ShutDown", "NLS_ZadalBot", function()
+        SendDataToBot({
+            Type = "ServerShutdown"
+        })
+    end)
 end
 
 if CLIENT then
