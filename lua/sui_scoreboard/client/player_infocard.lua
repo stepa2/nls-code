@@ -172,10 +172,10 @@ function PANEL:PerformLayout()
 	self.btnBan:SetPos( self:GetWide() - 46 - 4, 85 - (22 * 0) )
 	self.btnBan:SetSize( 46, 20 )
 
-	self.btnGoto:SetPos( self:GetWide() - 46 - 48 - 4, 85 - (22 * 2) )
+	self.btnGoto:SetPos( self:GetWide() - 46 - 48 - 4, 85 - (22 * 0) )
 	self.btnGoto:SetSize( 46, 20 )
 
-	self.btnBring:SetPos( self:GetWide() - 46 - 48 - 4, 85 - (22 * 2) )
+	self.btnBring:SetPos( self:GetWide() - 46 - 48 - 4, 85 - (22 * 1) )
 	self.btnBring:SetSize( 46, 20 )
 	
 	--self.btnBan.DoClick = function () Scoreboard.ban( self.Player ) end
