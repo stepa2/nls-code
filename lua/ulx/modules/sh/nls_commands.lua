@@ -1,35 +1,34 @@
 AddCSLuaFile()
 
-local cmd_pvp = ulx.command("NLS", "ulx pvp", function(caller, target)
-    if IsValid(target) then
-        if not caller:IsAdmin() then
-            ulx.fancyLogAdmin( caller, false, "Только администрация может менять игровые режимы других игроков" )
-            return
-        end
-    else
-        target = caller
+local function CreateGamemodeCommand(gm)
+    return function(caller)
+        NLS.Gamemodes.Set(caller, gm)
     end
+end
 
-    NLS.Gamemodes.Set(target, NLS.Gamemodes.Types.PVP)
-end, {"!pvp"})
-
-cmd_pvp:addParam{ type=ULib.cmds.PlayerArg, ULib.cmds.optional }
+local cmd_pvp = ulx.command("NLS", "ulx pvp", CreateGamemodeCommand(NLS.Gamemodes.Types.PVP), {"!pvp"})
 cmd_pvp:defaultAccess(ULib.ACCESS_ALL)
 cmd_pvp:help("Переводит игрока в режим боя")
 
-local cmd_build = ulx.command("NLS", "ulx build", function(caller, target)
-    if IsValid(target) then
-        if not caller:IsAdmin() then
-            ulx.fancyLogAdmin( caller, false, "Только администрация может менять игровые режимы других игроков" )
-            return
-        end
-    else
-        target = caller
-    end
+local cmd_build = ulx.command("NLS", "ulx build", CreateGamemodeCommand(NLS.Gamemodes.Types.BUILD), {"!build"})
 
-    NLS.Gamemodes.Set(target, NLS.Gamemodes.Types.BUILD)
-end, {"!build"})
-
-cmd_pvp:addParam{ type=ULib.cmds.PlayerArg, ULib.cmds.optional }
 cmd_build:defaultAccess(ULib.ACCESS_ALL)
 cmd_build:help("Переводит игрока в режим строительства")
+
+local cmd_gamemode = ulx.command("NLS", "ulx gamemode", function(caller, gm_name, targets)
+    local gm_id = NLS.Gamemodes.Types[gm_name]
+
+    if gm_id == nil then
+        ULib.tsayError( caller, "Неправильное название игрового режима", true )
+        return
+    end
+
+    for i, target in ipairs(targets) do
+        NLS.Gamemodes.Set(target, gm_id)
+    end
+end, "!gamemode")
+
+cmd_gamemode:defaultAccess( ULib.ACCESS_ADMIN )
+cmd_gamemode:help("Меняет игровой режим игроку (игрокам)")
+cmd_gamemode:addParam({type = ULib.cmds.StringArg, hint = "gamemode"})
+cmd_gamemode:addParam({type = ULib.cmds.PlayersArg})

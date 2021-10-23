@@ -41,6 +41,7 @@ if SERVER then
 
         net.Start("NLS_Gamemode_Changed")
             net.WriteEntity(ply)
+            net.WriteUInt(gm, 4)
         net.Broadcast()
 
         PlayerGamemodes[ply] = gm
@@ -68,9 +69,12 @@ else
 
     net.Receive("NLS_Gamemode_Changed", function()
         local ply = net.ReadEntity()
+        local gm_id = net.ReadUInt(4)
+
+        local gm = Gamemodes.FancyName[gm_id] or "Invalid"
 
         chat.AddText(SERVER_NAME_COLOR, "NLS: ",
-            Color(255,255,255), "Игрок ", ply, " сменил игровой режим на ", Gamemodes.GetFancyName(ply))
+            Color(255,255,255), "Игрок ", ply, " сменил игровой режим на ", gm)
     end)
 end
 
