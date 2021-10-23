@@ -80,7 +80,8 @@ end
 local StartWorkshopDownload
 local OnAllInfoReceived
 local LoadAllAddons
-local MountGMAs
+local MountGMA
+local OnFinished
 
 
 net.Receive("LzWD_WorkshopAddons", function()
@@ -93,13 +94,13 @@ net.Receive("LzWD_WorkshopAddons", function()
     for i = 1, count do
         local wid = net.ReadString()
         local new = WorkshopAddons[wid] or false
-        
+
         WorkshopAddons[wid] = new
 
         if new == false then newCount = newCount + 1 end
     end
 
-    PrintChat("LzWD > Будет загружено "..tostring(newCount).." аддонов")
+    PrintChat("LzWD > Всего "..tostring(newCount).." аддонов")
 
     StartWorkshopDownload(count)
 end)
@@ -110,19 +111,19 @@ StartWorkshopDownload = function(count)
 
     for workshopid, is_loaded in pairs(WorkshopAddons) do
         if is_loaded then
-            continue 
+            continue
         end
 
         steamworks.FileInfo(workshopid, function(info)
             count = count - 1
-            
+
             if info.error ~= nil then
                 to_remove[workshopid] = true
                 PrintError("Ошибка #"..tostring(info.error).." при получении информации об аддоне "..workshopid)
             else
                 WorkshopAddonsInfo[workshopid] = info
                 --PrintChat("LzWD > Получена информация об аддоне #"..workshopid.." ("..info.title..")")
-            
+
                 if count == 0 then
                     OnAllInfoReceived()
                 end
@@ -167,6 +168,7 @@ OnAllInfoReceived = function()
     end
 
     local addonsBySize = {}
+    local downloadAddons = 0
 
     for wid, data in SortedPairsByMemberValue(addons, "Size", false) do
         table.insert(addonsBySize, {
@@ -176,8 +178,13 @@ OnAllInfoReceived = function()
             GMA = data.GMA,
             UpdateTime = data.UpdateTime
         })
+
+        if not data.Actual then
+            downloadAddons = downloadAddons + 1
+        end
     end
 
+    PrintChat("LzWD > Будет скачано "..tostring(downloadAddons).." аддонов")
 
     LoadAllAddons(addonsBySize)
 end
@@ -198,60 +205,61 @@ local function DownloadAddon(workshopid, callback)
         end
     end)
 
-end 
+end
 
 LoadAllAddons = function(addonsBySize)
     local remainingCount = #addonsBySize
-    local anyNonActual = false
 
+    if remainingCount == 0 then
+        OnFinished()
+        return
+    end
 
     for i, data in ipairs(addonsBySize) do
         local wid = data.WorkshopId
 
         if not data.Actual then
-            anyNonActual = true
-
             DownloadAddon(wid, function(path, gma_file)
                 data.GMA = path
                 data.Actual = true
                 CacheFile(wid, gma_file:Read(gma_file:Size()), data.UpdateTime)
-            
+                MountGMA(data)
+
                 remainingCount = remainingCount - 1
-                --PrintChat("LzWD > Скачен аддон #"..wid.." ("..WorkshopAddonsInfo[wid].title..")")
 
                 if remainingCount == 0 then
-                    MountGMAs(addonsBySize)
+                    OnFinished()
+                    return
                 end
             end)
         else
-            --PrintChat("LzWD > Аддон #"..wid.." ("..WorkshopAddonsInfo[wid].title..") уже скачен")
-            remainingCount = remainingCount - 1
-        end
-    end
+            MountGMA(data)
 
-    if not anyNonActual then
-        MountGMAs(addonsBySize)
+            remainingCount = remainingCount - 1
+
+            if remainingCount == 0 then
+                OnFinished()
+                return
+            end
+        end
     end
 end
 
-MountGMAs = function(addons)
-    PrintChat("LzWD > Монтируем "..tostring(table.Count(addons)).." аддонов")
-    
-    for i, addon in pairs(addons) do
-        local success, files = game.MountGMA(addon.GMA)
-        
-        local wid = addon.WorkshopId
-        
-        if not success then
-            PrintError("Ошибка при монтировании аддона #"..wid.." ("..WorkshopAddonsInfo[wid].title..")")
-        else
-            WorkshopAddons[wid] = true
-        end
+MountGMA = function(addon)
+    local success, _ = game.MountGMA(addon.GMA)
+
+    local wid = addon.WorkshopId
+
+    if not success then
+        PrintError("Ошибка при монтировании аддона #"..wid.." ("..WorkshopAddonsInfo[wid].title..")")
+    else
+        addon.Mounted = true
+        WorkshopAddons[wid] = true
     end
+end
 
+OnFinished = function()
     DownloadInProcess = false
-
-    WriteCacheDesc()
 
     PrintChat("LzWD > Завершено!")
 end
