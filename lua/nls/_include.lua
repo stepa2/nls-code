@@ -1,11 +1,14 @@
 AddCSLuaFile()
 
 SERVER_NAME = "NLS"
+SERVER_NAME_COLOR = Color(128,0,255)
 NLS = {}
 
 if CLIENT then
     language.Add("SERVER_NAME", SERVER_NAME)
 end
+
+include("bugfixes.lua")
 
 include("servermenu.lua")
 
@@ -18,7 +21,7 @@ if CLIENT then
 else
     AddCSLuaFile("lzwd_cl.lua")
     include("lzwd_cfg_sv.lua")
-    include("lzwd_sv.lua")        
+    include("lzwd_sv.lua")
 end
 
 if SERVER then
