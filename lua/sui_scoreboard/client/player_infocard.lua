@@ -45,7 +45,7 @@ function PANEL:Init()
 		Scoreboard.RunULXCommand( self.Player, "kick", "" ) 
 	end
 
-	self.btnPBan.DoClick = function () 
+	self.btnBan.DoClick = function () 
 		Scoreboard.RunULXCommand( self.Player, "ban", "0" ) 
 	end
 
@@ -169,8 +169,8 @@ function PANEL:PerformLayout()
 	self.btnJail:SetPos( self:GetWide() - 46 - 4, 85 - (22 * 1) )
 	self.btnJail:SetSize( 46, 20 )
 
-	self.btnPBan:SetPos( self:GetWide() - 46 - 4, 85 - (22 * 0) )
-	self.btnPBan:SetSize( 46, 20 )
+	self.btnBan:SetPos( self:GetWide() - 46 - 4, 85 - (22 * 0) )
+	self.btnBan:SetSize( 46, 20 )
 
 	self.btnGoto:SetPos( self:GetWide() - 46 - 48 - 4, 85 - (22 * 2) )
 	self.btnGoto:SetSize( 46, 20 )
