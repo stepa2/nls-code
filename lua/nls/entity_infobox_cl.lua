@@ -1,3 +1,5 @@
+if FPP == nil then return end
+
 local disappearTime  = CreateClientConVar("entityinfobox_disappeartime", "0.8", true, false, "Time it takes the InfoBox to disappear (seconds)")
 local animationSpeed = CreateClientConVar("entityinfobox_animationspeed", "5", true, false, "Divisor of the animation speed (the higher the slower animation speed)")
 
