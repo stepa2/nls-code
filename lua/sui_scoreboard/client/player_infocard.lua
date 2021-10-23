@@ -50,15 +50,15 @@ function PANEL:Init()
 	end
 
 	self.btnJail.DoClick = function () 
-		Scoreboard.RunULXCommand( self.Player, "jail", "5" ) 
+		Scoreboard.RunULXCommand( self.Player, "jail", "300" ) 
 	end
 
 	self.btnGoto.DoClick = function ()
-		Scoreboard.RunULXCommand( self.Player, "goto" ) 
+		Scoreboard.RunULXCommand( self.Player, "goto", "" ) 
 	end
 	
 	self.btnBring.DoClick = function ()
-		Scoreboard.RunULXCommand( self.Player, "bring" ) 
+		Scoreboard.RunULXCommand( self.Player, "bring", "" ) 
 	end
 end
 
