@@ -155,6 +155,6 @@ if CLIENT then
 
     net.Receive("NLS_ZadalBot_Message", function()
         local msg = net.ReadString()
-        chat.AddText("[ZadalBot] ", msg)
+        chat.AddText(SERVER_NAME_COLOR, "[ZadalBot] ", Color(255,255,255), msg)
     end)
 end
