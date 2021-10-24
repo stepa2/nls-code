@@ -95,12 +95,6 @@ function PANEL:SetPlayer( ply )
 	self.imgAvatar:SetPlayer( ply )
 end
 
-local GamemodePretty = {
-	[NLS.Gamemodes.Types.PVP] = "PvP",
-	[NLS.Gamemodes.Types.BUILD] = "Build",
-	--[NLS.Gamemodes.Types.RP] = "RP"
-}
-
 --- UpdatePlayerData
 function PANEL:UpdatePlayerData()
 	if not self.Player:IsValid() then
@@ -112,7 +106,7 @@ function PANEL:UpdatePlayerData()
 
 	self.lblHours:SetText( Scoreboard.formatTime( Scoreboard.getPlayerTime( self.Player ) ))
 
-	self.lblGamemode:SetText( GamemodePretty[NLS.Gamemodes.Get(self.Player)] or "<Error>" )
+	self.lblGamemode:SetText( NLS.Gamemodes.GetFancyName(self.Player) )
 	self.lblFrags:SetText( self.Player:Frags() )
 	self.lblDeaths:SetText( self.Player:Deaths() )
 	self.lblPing:SetText( self.Player:Ping() )

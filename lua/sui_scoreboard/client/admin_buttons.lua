@@ -43,21 +43,3 @@ function PANEL:Paint(w,h)
 end
 
 vgui.Register( "suispawnmenuadminbutton", PANEL, "Button" )
-
---- PlayerKickButton
-PANEL = {}
-PANEL.Text = "Кик"
-
-vgui.Register( "suiplayerkickbutton", PANEL, "suispawnmenuadminbutton" )
-
---- PlayerPermBanButton
-PANEL = {}
-PANEL.Text = "Бан ∞"
-
-vgui.Register( "suiplayerpermbanbutton", PANEL, "suispawnmenuadminbutton" )
-
---- PlayerPermBanButton
-PANEL = {}
-PANEL.Text = "Бан 1ч"
-
-vgui.Register( "suiplayerbanbutton", PANEL, "suispawnmenuadminbutton" )
