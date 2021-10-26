@@ -26,6 +26,8 @@ if SERVER then
     local PlayerGamemodes = {}
 
     function Gamemodes.Set(ply, gm)
+        assert(ply ~= nil)
+
         if gm == PlayerGamemodes[ply] then
             return
         end
@@ -37,12 +39,14 @@ if SERVER then
         ply:SetNoTarget(gm == Gamemodes.Types.Build)
 
         ply:SetNWInt("NLS_Gamemode", gm)
-        ply:EmitSound("buttons/button24.wav")
 
-        net.Start("NLS_Gamemode_Changed")
-            net.WriteEntity(ply)
-            net.WriteUInt(gm, 4)
-        net.Broadcast()
+        if gm ~= nil then
+            ply:EmitSound("buttons/button24.wav")
+            net.Start("NLS_Gamemode_Changed")
+                net.WriteEntity(ply)
+                net.WriteUInt(gm, 4)
+            net.Broadcast()
+        end
 
         PlayerGamemodes[ply] = gm
     end
@@ -111,12 +115,8 @@ if SERVER then
         --    return false
         --end
 
-        print("Damage", "Target", target, "Damager", damager)
-
         local targetPly = GetDamageRelatedPlayer(target, function() end)
         local damagerPly = GetDamageRelatedPlayer(damager, print)
-
-        print("TargetPly", targetPly, "DamagerPly", damagerPly)
 
         if damagerPly == nil then
             return
