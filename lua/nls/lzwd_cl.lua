@@ -59,8 +59,16 @@ end
 ReadCacheDesc()
 concommand.Add("lzwd_reload_cachedesc", ReadCacheDesc)
 
-local function CacheFile(id, data, timestamp)
-    file.Write(SAVED_ADDONS_CACHE_DIR..id..".gma.dat", data)
+local READ_STEP = 1024*1024*1024
+
+local function CacheFile(id, src_file, timestamp)
+    local dest_file = file.Open(SAVED_ADDONS_CACHE_DIR..id..".gma.dat", "w", "DATA")
+
+    while not src_file:EndOfFile() do
+        dest_file:Write(src_file:Read(READ_STEP))
+    end
+
+    dest_file:Close()
 
     SavedAddonsData[id] = timestamp
     WriteCacheDesc()
@@ -224,7 +232,7 @@ LoadAllAddons = function(addonsBySize)
             DownloadAddon(wid, function(path, gma_file)
                 data.GMA = path
                 data.Actual = true
-                CacheFile(wid, gma_file:Read(gma_file:Size()), data.UpdateTime)
+                CacheFile(wid, gma_file, data.UpdateTime)
                 MountGMA(data)
 
                 remainingCount = remainingCount - 1
