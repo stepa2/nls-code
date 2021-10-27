@@ -144,6 +144,7 @@ OnAllInfoReceived = function()
             addons[wid] = {
                 Size = WorkshopAddonsInfo[wid].size,
                 UpdateTime = WorkshopAddonsInfo[wid].updated,
+                Name = WorkshopAddonsInfo[wid].title,
                 Actual = is_loaded
             }
         end
@@ -176,7 +177,8 @@ OnAllInfoReceived = function()
             Size = data.Size,
             Actual = data.Actual,
             GMA = data.GMA,
-            UpdateTime = data.UpdateTime
+            UpdateTime = data.UpdateTime,
+            Name = data.Name
         })
 
         if not data.Actual then
@@ -246,13 +248,15 @@ LoadAllAddons = function(addonsBySize)
 end
 
 MountGMA = function(addon)
-    local success, _ = game.MountGMA(addon.GMA)
+    local success, files = game.MountGMA(addon.GMA)
 
     local wid = addon.WorkshopId
 
     if not success then
         PrintError("Ошибка при монтировании аддона #"..wid.." ("..WorkshopAddonsInfo[wid].title..")")
     else
+        NLS.Spawnmenu.AddFiles(string.Replace(addon.Name,"\n", " "), files)
+
         addon.Mounted = true
         WorkshopAddons[wid] = true
     end

@@ -35,3 +35,9 @@ if SERVER then
 else
     include("player_3dnick_cl.lua")
 end
+
+if SERVER then
+    AddCSLuaFile("spawnmenu_cl.lua")
+else
+    include("spawnmenu_cl.lua")
+end
