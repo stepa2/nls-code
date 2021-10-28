@@ -8,11 +8,8 @@ local function PrintChat(msg)
     else
         print(msg)
     end
-end
 
-local function PrintError(msg)
-    PrintChat("LZWD > "..msg)
-    net.Start("LzWD_ClientError")
+    net.Start("LzWD_ClientMessage")
         net.WriteString(msg)
     net.SendToServer()
 end
@@ -25,7 +22,6 @@ local SavedAddonsData = {}
 
 local WorkshopAddons = {}
 local WorkshopAddonsInfo = {}
-local NewWorkshopAddonsNoInfoCount = 0
 
 local DownloadInProcess = false
 
@@ -59,13 +55,18 @@ end
 ReadCacheDesc()
 concommand.Add("lzwd_reload_cachedesc", ReadCacheDesc)
 
-local READ_STEP = 1024*1024*1024
+local READ_STEP = 16*1024*1024
 
 local function CacheFile(id, src_file, timestamp)
-    local dest_file = file.Open(SAVED_ADDONS_CACHE_DIR..id..".gma.dat", "w", "DATA")
+    local dest_file = file.Open(SAVED_ADDONS_CACHE_DIR..id..".gma.dat", "wb", "DATA")
 
-    while not src_file:EndOfFile() do
-        dest_file:Write(src_file:Read(READ_STEP))
+    local count_f = src_file:Size() / READ_STEP
+    local count = math.ceil(count_f)
+
+    for i = 1, count do
+        local data = src_file:Read(math.min(READ_STEP, src_file:Size() - src_file:Tell()))
+
+        dest_file:Write(data)
     end
 
     dest_file:Close()
@@ -108,7 +109,7 @@ net.Receive("LzWD_WorkshopAddons", function()
         if new == false then newCount = newCount + 1 end
     end
 
-    PrintChat("LzWD > Всего "..tostring(newCount).." аддонов")
+    PrintChat("Всего "..tostring(newCount).." аддонов")
 
     StartWorkshopDownload(count)
 end)
@@ -127,10 +128,9 @@ StartWorkshopDownload = function(count)
 
             if info.error ~= nil then
                 to_remove[workshopid] = true
-                PrintError("Ошибка #"..tostring(info.error).." при получении информации об аддоне "..workshopid)
+                PrintChat("Ошибка #"..tostring(info.error).." при получении информации об аддоне "..workshopid)
             else
                 WorkshopAddonsInfo[workshopid] = info
-                --PrintChat("LzWD > Получена информация об аддоне #"..workshopid.." ("..info.title..")")
 
                 if count == 0 then
                     OnAllInfoReceived()
@@ -194,7 +194,7 @@ OnAllInfoReceived = function()
         end
     end
 
-    PrintChat("LzWD > Будет скачано "..tostring(downloadAddons).." аддонов")
+    PrintChat("Будет скачано "..tostring(downloadAddons).." аддонов")
 
     LoadAllAddons(addonsBySize)
 end
@@ -209,7 +209,7 @@ local function DownloadAddon(workshopid, callback)
             callback(path, gma_file)
         else
             timer.Simple(2, function()
-                PrintError("Ошибка при скачивании аддона #"..workshopid..", перезапуск закачки")
+                PrintChat("Ошибка при скачивании аддона #"..workshopid..", перезапуск закачки")
                 DownloadAddon(workshopid, callback)
             end)
         end
@@ -261,7 +261,7 @@ MountGMA = function(addon)
     local wid = addon.WorkshopId
 
     if not success then
-        PrintError("Ошибка при монтировании аддона #"..wid.." ("..WorkshopAddonsInfo[wid].title..")")
+        PrintChat("Ошибка при монтировании аддона #"..wid.." ("..WorkshopAddonsInfo[wid].title..")")
     else
         NLS.Spawnmenu.AddFiles(string.Replace(addon.Name,"\n", " "), files)
 
@@ -273,11 +273,11 @@ end
 OnFinished = function()
     DownloadInProcess = false
 
-    PrintChat("LzWD > Завершено!")
+    PrintChat("Завершено!")
 end
 
 hook.Add("InitPostEntity", "LzWD_InitPostEntity", function()
-    PrintChat("LzWD > Сейчас начнётся загрузка аддонов")
+    PrintChat("Сейчас начнётся загрузка аддонов")
 
     timer.Simple(6, function()
         RunConsoleCommand("lzwd_requestaddons")

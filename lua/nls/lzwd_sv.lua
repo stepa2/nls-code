@@ -38,8 +38,8 @@ concommand.Add("lzwd_requestaddons", function(requester)
     net.Send(requester)
 end)
 
-net.Receive("LzWD_ClientError", function(len, ply)
-    MsgN("LzWD > ",ply:Nick()," has an error: ", net.ReadString())
+net.Receive("LzWD_ClientMessage", function(len, ply)
+    MsgN("LzWD > ",ply:Nick()," message: ", net.ReadString())
 end)
 
 print("LzWD > Serverside init finished")
