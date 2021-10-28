@@ -54,6 +54,45 @@ LzWDAddons = {
     "2100793947", -- Raising the Bar: Redux: Prop Models
     "284266415", -- Sci-fi Props Megapack
     "104477476", -- Misc Props Pack
+    "131759821", -- VJ Base
+    "566678693", -- Half-life 2+ SNPCs
+    "106466767", -- Neo Heavy Combine
+    "801851693", -- Terminators SNPCs
+    "420330178", -- Terminator Weapons
+    "1187432060", -- [VJ Base] Assault Synth SNPC
+    "1358179694", -- [VJ Base] Combine Synth Soldier NPCs
+    "1416951128", -- Civilians NPCs (VJ)
+    "2051259080", -- [VJ] Headcrab Infection System
+    "2184624179", -- [VJ] Super Synth SNPC (Fixed)
+    "2548809283", -- Half-Life Resurgence
+    "1536251090", -- S.T.A.L.K.E.R. Anomalies
+    "2485183074", -- [VJ] S.T.A.L.K.E.R. "Аномалии"
+    "2223658602", -- [Half-Life: Alyx] Combine Soldiers (Re-Done Textures, Playermodel, NPC, Ragdoll)
+    "2236284176", -- [Half Life: Alyx] Combine Soldier (Re-done Mats, Player, NPC, Ragdoll)
+    "2036698699", -- HLA: Metropolice P.M. and Ragdoll
+    "2215778476", -- [VJ] Half-Life: Alyx Combines
+    "2052642961", -- SNPC Particle Resource Pack
+    "2168210817", -- Half-Life Alyx: Antlions
+    "2099942902", -- [VJ] S.T.A.L.K.E.R. "Mutants" [RESOURCES]
+    "1470158687", -- Full Integrated Animation P.M. for NPCs HL2
+    "2099952978", -- [VJ] S.T.A.L.K.E.R. "Мутанты"]
+    "1790003547", -- [VJ] HλLF - LIFE ² SNPCs (Reuploaded)
+    "1839650139", -- [VJ] HλLF - LIFE ² DLC SNPCs
+    "1839725372", -- [VJ] HλLF - LIFE ³ SNPCs
+    "173344427", -- Black Mesa SNPCs
+    "1934774464", -- [VJ] Black Mesa Source : XEN NPC
+    "1958369912", -- [vj] BLACK MESA : XEN NPC V2
+    "1163787295", -- [VJ]BLACK MESA Expand NPC:XEN&Vehicles
+    "1255758317", -- Black Mesa Expand NPC (Models pack2)
+    "1255726751", -- Black mesa expand npc (models pack1)
+    "213515639", -- Emplacements
+    "822075881", -- Groundwatch
+    "741788352", -- Airwatch
+    "1406336883", -- C8 V3b Content Pack
+    "860373684", -- [simfphys] HL2 Pre-war vehicles Reworked
+    "1773030130", -- [VJ] Melee Weapons
+    "1361775351",  -- Zero-Point Energy Projector | Transmissions: Element 120
+
 
     -- For resources, lua installed locally
     "160250458", -- Wiremod
@@ -62,6 +101,7 @@ LzWDAddons = {
     "1525218777", -- vFire - Dynamic Fire for Garry's Mod
     "1525572545", -- vFire Flamethrower
     "1615992780", -- ProWolf's Zone Tool
+    "2458909924", -- Prop2Mesh
 }
 
 print("LzWD > Config init finished")
