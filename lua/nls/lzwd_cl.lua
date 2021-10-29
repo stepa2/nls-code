@@ -1,5 +1,25 @@
 print("LzWD > Clientside init")
 
+-- game.AddParticles override
+
+local game_AddParticles = game.AddParticles
+local required_particles = {}
+
+function game.AddParticles(file)
+    required_particles[file] = false
+end
+
+local function OnFilesMounted_Particle(files)
+    for i, f in ipairs(files) do
+        if required_particles[f] == false then
+            game_AddParticles(f)
+            required_particles[f] = true
+        end
+    end
+end
+
+--
+
 local function PrintServer(msg)
     net.Start("LzWD_ClientMessage")
         net.WriteString(msg)
@@ -291,6 +311,7 @@ MountGMA = function(addon)
     else
         local addonName = string.Replace(addon.Name,"\n", " ")
         NLS.Spawnmenu.AddFiles(addonName, files)
+        OnFilesMounted_Particle(files)
         PrintServer("Смонтирован аддон "..wid.." '"..addonName.."'")
 
         addon.Mounted = true
