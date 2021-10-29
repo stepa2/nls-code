@@ -1,7 +1,7 @@
 print("LzWD > Serverside init")
 
 util.AddNetworkString("LzWD_WorkshopAddons")
-util.AddNetworkString("LzWD_ClientError")
+util.AddNetworkString("LzWD_ClientMessage")
 
 assert(istable(LzWDAddons), "lua/autorun/server/stpm64_lzwd_sv_cfg.lua did not executed before this file")
 
