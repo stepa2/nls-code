@@ -227,7 +227,7 @@ local function DownloadAddon(workshopid, callback, fatal_callback)
             if attempt > 0 then
                 timer.Simple(2, function()
                     PrintChat("Ошибка при скачивании аддона "..workshopid..", перезапуск закачки ("..tostring(attempt)..")")
-                    DownloadAddon(workshopid, callback)
+                    DownloadAddon(workshopid, callback, fatal_callback)
                 end)
             else
                 fatal_callback()
