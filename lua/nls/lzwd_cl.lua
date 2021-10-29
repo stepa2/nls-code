@@ -1,5 +1,11 @@
 print("LzWD > Clientside init")
 
+local function PrintServer(msg)
+    net.Start("LzWD_ClientMessage")
+        net.WriteString(msg)
+    net.SendToServer()
+end
+
 local function PrintChat(msg)
     local lp = LocalPlayer()
 
@@ -9,9 +15,7 @@ local function PrintChat(msg)
         print(msg)
     end
 
-    net.Start("LzWD_ClientMessage")
-        net.WriteString(msg)
-    net.SendToServer()
+    PrintServer(msg)
 end
 
 local SAVED_ADDONS_DATA_FILE = "nls/lzwd/desc.json"
@@ -162,6 +166,8 @@ OnAllInfoReceived = function()
         local addon = addons[data.wsid]
 
         if addon then
+            PrintServer("Аддон скачан клиентом и будет смонтирован: "..data.wsid, " '", addon.Name,"'")
+
             addon.Actual = true
             addon.GMA = data.file
         end
@@ -170,7 +176,9 @@ OnAllInfoReceived = function()
     for wid, addon in pairs(addons) do
         local cached_gma = GetCachedFilePath(wid, addon.UpdateTime)
 
-        if cached_gma then
+        if cached_gma and not addon.Actual then
+            PrintServer("Аддон кеширован: "..data.wsid, " '", addon.Name,"'")
+
             addon.Actual = true
             addon.GMA = cached_gma
         end
@@ -206,10 +214,11 @@ end
 local function DownloadAddon(workshopid, callback)
     steamworks.DownloadUGC(workshopid, function(path, gma_file)
         if path ~= nil then
+            PrintServer("Скачан аддон "..workshopid)
             callback(path, gma_file)
         else
             timer.Simple(2, function()
-                PrintChat("Ошибка при скачивании аддона #"..workshopid..", перезапуск закачки")
+                PrintChat("Ошибка при скачивании аддона "..workshopid..", перезапуск закачки")
                 DownloadAddon(workshopid, callback)
             end)
         end
@@ -261,9 +270,11 @@ MountGMA = function(addon)
     local wid = addon.WorkshopId
 
     if not success then
-        PrintChat("Ошибка при монтировании аддона #"..wid.." ("..WorkshopAddonsInfo[wid].title..")")
+        PrintChat("Ошибка при монтировании аддона #"..wid.." '"..WorkshopAddonsInfo[wid].title.."'")
     else
-        NLS.Spawnmenu.AddFiles(string.Replace(addon.Name,"\n", " "), files)
+        local addonName = string.Replace(addon.Name,"\n", " ")
+        NLS.Spawnmenu.AddFiles(addonName, files)
+        PrintServer("Смонтирован аддон "..wid.." '"..addonName.."'")
 
         addon.Mounted = true
         WorkshopAddons[wid] = true
