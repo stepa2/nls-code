@@ -14,7 +14,7 @@ local cmd_build = ulx.command("NLS", "ulx build", CreateGamemodeCommand(NLS.Game
 cmd_build:defaultAccess(ULib.ACCESS_ALL)
 cmd_build:help("Переводит игрока в режим строительства")
 
-local cmd_build = ulx.command("NLS", "ulx build", CreateGamemodeCommand(NLS.Gamemodes.Types.RP), {"!rp"})
+local cmd_build = ulx.command("NLS", "ulx rp", CreateGamemodeCommand(NLS.Gamemodes.Types.RP), {"!rp"})
 cmd_build:defaultAccess(ULib.ACCESS_ALL)
 cmd_build:help("Переводит игрока в ролевой режим")
 
