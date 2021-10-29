@@ -11,12 +11,15 @@ cmd_pvp:defaultAccess(ULib.ACCESS_ALL)
 cmd_pvp:help("Переводит игрока в режим боя")
 
 local cmd_build = ulx.command("NLS", "ulx build", CreateGamemodeCommand(NLS.Gamemodes.Types.BUILD), {"!build"})
-
 cmd_build:defaultAccess(ULib.ACCESS_ALL)
 cmd_build:help("Переводит игрока в режим строительства")
 
+local cmd_build = ulx.command("NLS", "ulx build", CreateGamemodeCommand(NLS.Gamemodes.Types.RP), {"!rp"})
+cmd_build:defaultAccess(ULib.ACCESS_ALL)
+cmd_build:help("Переводит игрока в ролевой режим")
+
 local cmd_gamemode = ulx.command("NLS", "ulx gamemode", function(caller, gm_name, targets)
-    local gm_id = NLS.Gamemodes.Types[gm_name]
+    local gm_id = NLS.Gamemodes.Types[string.upper(gm_name)]
 
     if gm_id == nil then
         ULib.tsayError( caller, "Неправильное название игрового режима", true )
