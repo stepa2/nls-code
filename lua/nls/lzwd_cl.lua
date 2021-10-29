@@ -148,6 +148,8 @@ StartWorkshopDownload = function(count)
     end
 end
 
+local DownloadRetries = {}
+
 OnAllInfoReceived = function()
     local addons = {}
 
@@ -203,24 +205,35 @@ OnAllInfoReceived = function()
     end
 
     PrintChat("Будет скачано "..tostring(downloadAddons).." аддонов")
+    DownloadRetries = {}
 
     LoadAllAddons(addonsBySize)
 end
 
+local INITIAL_RETRIES = 12
 
 -- This function assumes that if it is called, than addon #workshopid exists
 -- So it will retry downloading over and over
 -- callback = function(path)
-local function DownloadAddon(workshopid, callback)
+local function DownloadAddon(workshopid, callback, fatal_callback)
     steamworks.DownloadUGC(workshopid, function(path, gma_file)
         if path ~= nil then
             PrintServer("Скачан аддон "..workshopid)
             callback(path, gma_file)
         else
-            timer.Simple(2, function()
-                PrintChat("Ошибка при скачивании аддона "..workshopid..", перезапуск закачки")
-                DownloadAddon(workshopid, callback)
-            end)
+            local attempt = (DownloadRetries[workshopid] or INITIAL_RETRIES + 1) - 1
+            DownloadRetries[workshopid] = attempt
+
+            if attempt > 0 then
+                timer.Simple(2, function()
+                    PrintChat("Ошибка при скачивании аддона "..workshopid..", перезапуск закачки ("..tostring(attempt)..")")
+                    DownloadAddon(workshopid, callback)
+                end)
+            else
+                fatal_callback()
+            end
+
+
         end
     end)
 
@@ -250,6 +263,10 @@ LoadAllAddons = function(addonsBySize)
                     OnFinished()
                     return
                 end
+            end, function()
+                PrintChat("Ошибка при скачивании аддона "..wid)
+                PrintChat("Для ручного перезапуска закачки введите lzwd_requestaddons в консоль")
+                remainingCount = remainingCount - 1
             end)
         else
             MountGMA(data)
