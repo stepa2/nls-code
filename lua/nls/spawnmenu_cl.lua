@@ -184,7 +184,7 @@ function Spawnmenu.AddFiles(root_name, files)
     FileRoots[root_name] = root
 
     local raw_tree = FileListToTreeFiltered(files)
-    local tree = FlatTreeEnds(raw_tree)
+    local tree = FlatTreeEnds(raw_tree) or {__child_values = {}}
 
     root.Tree = tree
 
