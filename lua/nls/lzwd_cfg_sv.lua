@@ -102,6 +102,7 @@ LzWDAddons = {
     "1525572545", -- vFire Flamethrower
     "1615992780", -- ProWolf's Zone Tool
     "2458909924", -- Prop2Mesh
+    "2414556240", -- Advanced Material 2
 }
 
 print("LzWD > Config init finished")
