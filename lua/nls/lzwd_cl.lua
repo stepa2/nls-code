@@ -9,16 +9,16 @@ function game.AddParticles(file)
     required_particles[file] = false
 end
 
-local function OnFilesMounted_Particle(files)
+hook.Add("LzWD_OnMounted", "LzWD_Particles", function(name, files)
     for i, f in ipairs(files) do
         if required_particles[f] == false then
             game_AddParticles(f)
             required_particles[f] = true
         end
     end
-end
+end)
 
---
+-- Specific Logging
 
 local function PrintServer(msg)
     net.Start("LzWD_ClientMessage")
@@ -28,52 +28,56 @@ end
 
 local function PrintChat(msg)
     local lp = LocalPlayer()
+    local chat_msg = "LzWD > "..msg
 
     if IsValid(lp) then
-        lp:ChatPrint(msg)
+        lp:ChatPrint(chat_msg)
     else
-        print(msg)
+        print(chat_msg)
     end
 
     PrintServer(msg)
 end
 
-local SAVED_ADDONS_DATA_FILE = "nls/lzwd/desc.json"
+-- Caching
+
+local SAVED_ADDONS_DATA_FILE = "nls/lzwd/cache.txt"
 local SAVED_ADDONS_CACHE_DIR = "nls/lzwd/"
 
 local SavedAddonsData = {}
 
-
-local WorkshopAddons = {}
-local WorkshopAddonsInfo = {}
-
-local DownloadInProcess = false
-
--- Caching functions
-
 file.CreateDir("nls/lzwd")
 
 local function ReadCacheDesc()
+    SavedAddonsData = {}
+
     local data = file.Read(SAVED_ADDONS_DATA_FILE,"DATA")
 
     if data == nil then return end
 
-    SavedAddonsData = util.JSONToTable(data) or {}
+    for i, line in ipairs(string.Explode("\n", data)) do
+        if line == "" then continue end
+        line = string.Explode(" ", line)
 
-    local to_remove = {}
-    for gma, _ in pairs(SavedAddonsData) do
-        if not file.Exists(gma, "DATA") then
-            table.insert(to_remove, gma)
+        local wid = line[1]
+        local timestamp = tonumber(line[2])
+
+        local gma = SAVED_ADDONS_CACHE_DIR..wid..".gma.dat"
+
+        if file.Exists(gma, "DATA") then
+            SavedAddonsData[wid] = timestamp
         end
-    end
-
-    for _, remove in ipairs(to_remove) do
-        SavedAddonsData[remove] = nil
     end
 end
 
 local function WriteCacheDesc()
-    file.Write(SAVED_ADDONS_DATA_FILE, util.TableToJSON(SavedAddonsData, true))
+    local cache = file.Open(SAVED_ADDONS_DATA_FILE, "w", "DATA")
+
+    for wid, timestamp in pairs(SavedAddonsData) do
+        cache:Write(wid.." "..tostring(timestamp).."\n")
+    end
+
+    cache:Close()
 end
 
 ReadCacheDesc()
@@ -106,16 +110,31 @@ local function GetCachedFilePath(id, timestamp)
         return nil
     end
 
-    return "data/"..SAVED_ADDONS_CACHE_DIR..id..".gma.dat"
+    local path = "data/"..SAVED_ADDONS_CACHE_DIR..id..".gma.dat"
+
+    return path
 end
 
--- Functions
+-- Downloading
+
+local WorkshopAddons = {}
+local WorkshopAddonsInfo = {}
+
+local DownloadInProcess = false
+
 local StartWorkshopDownload
 local OnAllInfoReceived
 local LoadAllAddons
 local MountGMA
 local OnFinished
 
+hook.Add("InitPostEntity", "LzWD_InitPostEntity", function()
+    PrintChat("Сейчас начнётся загрузка аддонов")
+
+    timer.Simple(6, function()
+        RunConsoleCommand("lzwd_requestaddons")
+    end)
+end)
 
 net.Receive("LzWD_WorkshopAddons", function()
     assert(not DownloadInProcess, "Too fast!")
@@ -179,7 +198,7 @@ OnAllInfoReceived = function()
                 Size = WorkshopAddonsInfo[wid].size,
                 UpdateTime = WorkshopAddonsInfo[wid].updated,
                 Name = WorkshopAddonsInfo[wid].title,
-                Actual = is_loaded
+                Actual = false
             }
         end
     end
@@ -188,7 +207,7 @@ OnAllInfoReceived = function()
         local addon = addons[data.wsid]
 
         if addon then
-            PrintServer("Аддон скачан клиентом и будет смонтирован: "..data.wsid, " '", addon.Name,"'")
+            PrintServer("Аддон скачан клиентом и будет смонтирован: "..data.wsid.." '"..addon.Name,"'")
 
             addon.Actual = true
             addon.GMA = data.file
@@ -199,7 +218,7 @@ OnAllInfoReceived = function()
         local cached_gma = GetCachedFilePath(wid, addon.UpdateTime)
 
         if cached_gma and not addon.Actual then
-            PrintServer("Аддон кеширован: "..data.wsid, " '", addon.Name,"'")
+            PrintServer("Аддон кеширован: "..wid.." '"..addon.Name.."'")
 
             addon.Actual = true
             addon.GMA = cached_gma
@@ -230,7 +249,7 @@ OnAllInfoReceived = function()
     LoadAllAddons(addonsBySize)
 end
 
-local INITIAL_RETRIES = 12
+local INITIAL_RETRIES = 6
 
 -- This function assumes that if it is called, than addon #workshopid exists
 -- So it will retry downloading over and over
@@ -308,15 +327,15 @@ MountGMA = function(addon)
 
     if not success then
         PrintChat("Ошибка при монтировании аддона #"..wid.." '"..WorkshopAddonsInfo[wid].title.."'")
-    else
-        local addonName = string.Replace(addon.Name,"\n", " ")
-        NLS.Spawnmenu.AddFiles(addonName, files)
-        OnFilesMounted_Particle(files)
-        PrintServer("Смонтирован аддон "..wid.." '"..addonName.."'")
-
-        addon.Mounted = true
-        WorkshopAddons[wid] = true
+        return
     end
+
+    hook.Run("LzWD_OnMounted", addon.Name, files)
+
+    PrintServer("Смонтирован аддон "..wid.." '"..string.Replace(addon.Name,"\n", " ").."'")
+
+    addon.Mounted = true
+    WorkshopAddons[wid] = true
 end
 
 OnFinished = function()
@@ -324,13 +343,5 @@ OnFinished = function()
 
     PrintChat("Завершено!")
 end
-
-hook.Add("InitPostEntity", "LzWD_InitPostEntity", function()
-    PrintChat("Сейчас начнётся загрузка аддонов")
-
-    timer.Simple(6, function()
-        RunConsoleCommand("lzwd_requestaddons")
-    end)
-end)
 
 print("LzWD > Clientside init finished")

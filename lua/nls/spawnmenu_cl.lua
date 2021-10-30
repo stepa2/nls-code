@@ -190,3 +190,7 @@ function Spawnmenu.AddFiles(root_name, files)
 
     AddToSpawnmenu(root_node, tree)
 end
+
+hook.Add("LzWD_OnMounted", "NLS_Spawnmenu", function(addon_name, files)
+    Spawnmenu.AddFiles(string.Replace(addon_name,"\n", " "), files)
+end)
