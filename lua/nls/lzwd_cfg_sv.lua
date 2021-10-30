@@ -77,8 +77,9 @@ LzWDAddons = {
     "1406336883", -- C8 V3b Content Pack
     "860373684", -- [simfphys] HL2 Pre-war vehicles Reworked
     "1773030130", -- [VJ] Melee Weapons
-    "1361775351",  -- Zero-Point Energy Projector | Transmissions: Element 120
-
+    "2639959090", -- Manable Emplacements
+    "2455542073", -- Soviet Electronics Prop Pack (SnowDrop Escape)
+    "2555075836", -- Combine Interface Remake [REPLACER]
 
     -- For resources, lua installed locally
     "160250458", -- Wiremod
