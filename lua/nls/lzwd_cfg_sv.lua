@@ -6,7 +6,6 @@ LzWDAddons = {
     "1095903501", -- Episodic NPC Model Fix
     "104607228", -- Fire Extinguisher
     "422672588", -- Fortification Props Model Pack
-    "206166550", -- Sabre-aN's Headcrab Zombie Mod
     "173482196", -- SProps Workshop Edition
     "737640184", -- Tank Track Tool
     "430077474", -- ZONA Stalker Props Pack [1/4] [Base]
@@ -28,7 +27,6 @@ LzWDAddons = {
     "310835919", -- Half-Life 2 Leak Props: Complete
     "2015077130", -- Half-Life Alyx Buildings
     "2415018270", -- [Half Life: Alyx] Combine Props
-    "2019244401", -- Half-Life: Alyx JerryCan 
     "2088387376", -- Half-Life: Alyx - Interior prop's pack
     "2062854187", -- Half-Life: Alyx - city 17 props
     "2043900984", -- [Half Life: Alyx] Infestation Control props
@@ -53,31 +51,19 @@ LzWDAddons = {
     "811578093", -- CCA Technology Props
     "2100793947", -- Raising the Bar: Redux: Prop Models
     "284266415", -- Sci-fi Props Megapack
-    "104477476", -- Misc Props Pack
     "131759821", -- VJ Base
     "566678693", -- Half-life 2+ SNPCs
     "106466767", -- Neo Heavy Combine
-    "801851693", -- Terminators SNPCs
-    "420330178", -- Terminator Weapons
     "1187432060", -- [VJ Base] Assault Synth SNPC
     "1358179694", -- [VJ Base] Combine Synth Soldier NPCs
     "1416951128", -- Civilians NPCs (VJ)
     "2051259080", -- [VJ] Headcrab Infection System
-    "2184624179", -- [VJ] Super Synth SNPC (Fixed)
     "2548809283", -- Half-Life Resurgence
     "1536251090", -- S.T.A.L.K.E.R. Anomalies
     "2485183074", -- [VJ] S.T.A.L.K.E.R. "Аномалии"
-    "2223658602", -- [Half-Life: Alyx] Combine Soldiers (Re-Done Textures, Playermodel, NPC, Ragdoll)
-    "2236284176", -- [Half Life: Alyx] Combine Soldier (Re-done Mats, Player, NPC, Ragdoll)
-    "2036698699", -- HLA: Metropolice P.M. and Ragdoll
-    "2215778476", -- [VJ] Half-Life: Alyx Combines
     "2052642961", -- SNPC Particle Resource Pack
     "2168210817", -- Half-Life Alyx: Antlions
-    "2099942902", -- [VJ] S.T.A.L.K.E.R. "Mutants" [RESOURCES]
     "1470158687", -- Full Integrated Animation P.M. for NPCs HL2
-    "2099952978", -- [VJ] S.T.A.L.K.E.R. "Мутанты"]
-    "1790003547", -- [VJ] HλLF - LIFE ² SNPCs (Reuploaded)
-    "1839650139", -- [VJ] HλLF - LIFE ² DLC SNPCs
     "1839725372", -- [VJ] HλLF - LIFE ³ SNPCs
     "173344427", -- Black Mesa SNPCs
     "1934774464", -- [VJ] Black Mesa Source : XEN NPC
