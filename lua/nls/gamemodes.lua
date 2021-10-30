@@ -40,7 +40,7 @@ if SERVER then
 
         ply:SetNWInt("NLS_Gamemode", gm)
 
-        if gm ~= nil then
+        if gm ~= nil and IsValid(ply) then
             ply:EmitSound("buttons/button24.wav")
             net.Start("NLS_Gamemode_Changed")
                 net.WriteEntity(ply)
@@ -60,7 +60,7 @@ if SERVER then
     end, nil, nil, 0)
 
     hook.Add("PlayerInitialSpawn", "NLS_Gamemodes", function(ply)
-        Gamemodes.Set(ply, Gamemodes.Types.PVP)
+        Gamemodes.Set(ply, Gamemodes.Types.BUILD)
     end)
 
     hook.Add("PlayerDisconnected", "NLS_Gamemodes", function(ply)
