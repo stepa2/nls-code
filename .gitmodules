@@ -1,0 +1,6 @@
+[submodule "gamemodes/helix"]
+	path = gamemodes/helix
+	url = https://github.com/stepa2/helix.git
+[submodule "gamemodes/helix-nls"]
+	path = gamemodes/helix-nls
+	url = https://github.com/stepa2/helix-nls.git
