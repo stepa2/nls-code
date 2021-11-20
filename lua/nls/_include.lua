@@ -12,8 +12,6 @@ include("bugfixes.lua")
 
 include("servermenu.lua")
 
-include("gamemodes.lua")
-
 include("zadalbot.lua")
 
 if CLIENT then
@@ -28,12 +26,6 @@ if SERVER then
     AddCSLuaFile("entity_infobox_cl.lua")
 else
     include("entity_infobox_cl.lua")
-end
-
-if SERVER then
-    AddCSLuaFile("player_3dnick_cl.lua")
-else
-    include("player_3dnick_cl.lua")
 end
 
 if SERVER then
