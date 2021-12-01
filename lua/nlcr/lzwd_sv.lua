@@ -1,10 +1,6 @@
 util.AddNetworkString("LzWD_WorkshopAddons")
 util.AddNetworkString("LzWD_ClientMessage")
 
-
-
-
-
 -- The addons we need to send to player
 local AddonsDeferred = {}
 
@@ -19,29 +15,21 @@ resource.AddWorkshop = function(workshopid)
 end
 
 -- Config loading
-local CONFIG_FILE = "nlcr/lzwd_config.txt"
+local CONFIG_FILE = "nlcr/lzwd_config.lua"
 
 local function LoadConfig(clear_all)
-    local cfg_text = file.Read(CONFIG_FILE, "DATA")
-    if cfg_text == nil then
-        Error("LzWD Error: configuration file at garrysmod/data/",CONFIG_FILE," is missing!")
-    end
-
-    local cfg = util.KeyValuesToTable(cfg_text, true, true)
-    -- Errors in console if input is invalid
-    --[[if cfg == nil then
-        Error("LzWD Error: configuration file at garrysmod/data/",CONFIG_FILE," contains invalid JSON!")
-    end]]
+    -- If error happens here, add LzWD config file
+    local cfg = NLCR.IncludeFile(CONFIG_FILE)
 
     if clear_all then
         AddonsDeferred = {}
     end
 
-    for wsid, _ in pairs(cfg.Deferred or {}) do
+    for _, wsid in ipairs(assert(cfg.Deferred)) do
         AddonsDeferred[wsid] = true
     end
 
-    for wsid, _ in ipairs(cfg.Connection or {}) do
+    for _, wsid in ipairs(assert(cfg.Connection)) do
         resource.AddWorkshopActual(wsid)
     end
 end
@@ -50,7 +38,7 @@ LoadConfig(false)
 
 concommand.Add("lzwd_reload_config", function(_,_,args)
     LoadConfig(tobool(args[1]))
-end, nil, "Reloads LzWD addons config (garrysmod/data/"..CONFIG_FILE..").\n"..
+end, nil, "Reloads LzWD addons config (lua/"..CONFIG_FILE..").\n"..
         "If called with true or 1, previously-loaded addons are not keeped")
 
 concommand.Add("lzwd_request_addons", function(requester)
