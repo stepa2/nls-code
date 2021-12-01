@@ -15,10 +15,6 @@ include("gamemodes.lua")
 include("zadalbot.lua")
 
 if SERVER then
-    include("lzwd_cfg_sv.lua")
-end
-
-if SERVER then
     AddCSLuaFile("entity_infobox_cl.lua")
 else
     include("entity_infobox_cl.lua")
