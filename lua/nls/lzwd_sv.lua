@@ -14,6 +14,12 @@ do
     end
 end
 
+resource.AddWorkshopActual = resource.AddWorkshop
+
+for i, workshopid in ipairs(LzWDAddonsDirect) do
+    resource.AddWorkshopActual(workshopid)
+end
+
 resource.AddWorkshop = function(workshopid)
     assert(isstring(workshopid), "workshopid ("..tostring(workshopid)..") is not a string")
 

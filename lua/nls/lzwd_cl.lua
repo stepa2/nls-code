@@ -5,8 +5,12 @@ print("LzWD > Clientside init")
 local game_AddParticles = game.AddParticles
 local required_particles = {}
 
-function game.AddParticles(file)
-    required_particles[file] = false
+function game.AddParticles(filename)
+    if file.Exists(filename, "GAME") then
+        game_AddParticles(filename)
+    else
+        required_particles[filename] = false
+    end
 end
 
 hook.Add("LzWD_OnMounted", "LzWD_Particles", function(name, files)

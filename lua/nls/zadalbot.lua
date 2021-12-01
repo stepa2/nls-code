@@ -4,6 +4,7 @@ if SERVER then
     util.AddNetworkString("NLS_PlayerReady")
     util.AddNetworkString("NLS_ZadalBot_Message")
 
+    local PlayerFullyConnected = {}
     local Config = {}
 
     local function LoadConfig()
@@ -102,7 +103,7 @@ if SERVER then
             Type = "GameMessage",
             Sender = ply:Nick(),
             Contents = msg
-        }) 
+        })
     end)
     
     hook.Add("PlayerConnect", "NLS_ZadalBot", function(name)
@@ -121,12 +122,18 @@ if SERVER then
         }) 
     end)
 
+    hook.Add("PlayerDisconnected", "NLS_ZadalBot", function(ply)
+        PlayerFullyConnected[ply] = nil
+    end)
+
     net.Receive("NLS_PlayerReady", function(len, ply)
+        if PlayerFullyConnected[ply] == true then return end
+
         SendDataToBot({
             Type = "PlayerConnection",
             Player = ply:Nick(),
             Status = "LoadedClientside"
-        }) 
+        })
     end)
     
     gameevent.Listen("player_disconnect")
@@ -136,6 +143,12 @@ if SERVER then
             Player = data.name,
             Reason = data.reason
         })
+    end)
+
+    gameevent.Listen("player_connect")
+    hook.Add("player_connect", "NLS_ZadalBot", function(data)
+        local ply = Player(data.userid)
+        PlayerFullyConnected[ply] = false
     end)
 
     hook.Add("ShutDown", "NLS_ZadalBot", function()
