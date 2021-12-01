@@ -19,4 +19,8 @@ local function IncludeAll(files)
 end
 
 IncludeAll({
+    "bugfixes.lua",
+    "spawnmenu_cl.lua",
+    "lzwd_cl.lua",
+    "lzwd_sv.lua"
 })
