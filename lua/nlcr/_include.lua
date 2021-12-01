@@ -11,18 +11,34 @@ end
 
 NLCR = {}
 
-function NLCR.IncludeFile(filename)
-    local ends_with_sv = string.EndsWith(filename, "_sv.lua")
-    local ends_with_cl = string.EndsWith(filename, "_cl.lua")
-    -- _sh.lua handled as *anything else*.lua
+function NLCR.GetRealmFromFilename(filename)
+    if string.EndsWith(filename, "_sv.lua") then
+        return "sv"
+    elseif string.EndsWith(filename, "_cl.lua") then
+        return "cl"
+    end
 
-    if not ends_with_sv and SERVER then
+    filename = string.GetFileFromFilename(filename)
+    if string.StartWith(filename, "sv_") then
+        return "sv"
+    elseif string.StartWith(filename, "cl_") then
+        return "cl"
+    end
+
+    -- xxx_sh.lua and sh_xxx.lua goes there
+    return "sh"
+end
+
+function NLCR.IncludeFile(filename)
+    local realm = NLCR.GetRealmFromFilename(filename)
+
+    if realm ~= "sv" and SERVER then
         AddCSLuaFile(filename)
     end
 
-    if  (ends_with_sv and SERVER) or
-        (ends_with_cl and CLIENT) or
-        (not ends_with_sv and not ends_with_cl)
+    if  (realm == "sv" and SERVER) or
+        (realm == "cl" and CLIENT) or
+        (realm == "sh")
     then
         return include(filename)
     end
