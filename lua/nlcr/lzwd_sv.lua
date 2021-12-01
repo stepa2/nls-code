@@ -19,7 +19,7 @@ resource.AddWorkshop = function(workshopid)
 end
 
 -- Config loading
-local CONFIG_FILE = "nlcr/lzwd_config.json"
+local CONFIG_FILE = "nlcr/lzwd_config.txt"
 
 local function LoadConfig(clear_all)
     local cfg_text = file.Read(CONFIG_FILE, "DATA")
@@ -27,20 +27,21 @@ local function LoadConfig(clear_all)
         Error("LzWD Error: configuration file at garrysmod/data/",CONFIG_FILE," is missing!")
     end
 
-    local cfg = util.JSONToTable(cfg_text)
-    if cfg == nil then
+    local cfg = util.KeyValuesToTable(cfg_text, true, true)
+    -- Errors in console if input is invalid
+    --[[if cfg == nil then
         Error("LzWD Error: configuration file at garrysmod/data/",CONFIG_FILE," contains invalid JSON!")
-    end
+    end]]
 
     if clear_all then
         AddonsDeferred = {}
     end
 
-    for _, wsid in ipairs(cfg.Deferred or {}) do
+    for wsid, _ in pairs(cfg.Deferred or {}) do
         AddonsDeferred[wsid] = true
     end
 
-    for _, wsid in ipairs(cfg.Connection or {}) do
+    for wsid, _ in ipairs(cfg.Connection or {}) do
         resource.AddWorkshopActual(wsid)
     end
 end
