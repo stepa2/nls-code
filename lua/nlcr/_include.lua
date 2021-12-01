@@ -32,6 +32,8 @@ end
 function NLCR.IncludeFile(filename)
     local realm = NLCR.GetRealmFromFilename(filename)
 
+    hook.Run("NLCR.PreFileIncluded", filename, realm)
+
     if realm ~= "sv" and SERVER then
         AddCSLuaFile(filename)
     end
@@ -44,13 +46,28 @@ function NLCR.IncludeFile(filename)
     end
 end
 
-function NLCR.IncludeAll(files)
+function NLCR.IncludeList(files)
     for i, filename in ipairs(files) do
         NLCR.IncludeFile(filename)
     end
 end
 
-NLCR.IncludeAll({
+function NLCR.IncludeDir(dir, recursive)
+    local files, dirs = file.Find(dir.."*.lua", "LUA")
+    assert(files ~= nil, "Error including directory "..dir)
+
+    for _, filename in ipairs(files) do
+        NLCR.IncludeFile(dir..filename)
+    end
+
+    if recursive then
+        for _, dirname in ipairs(dirs) do
+            NLCR.IncludeDir(dir..dirname.."/", true)
+        end
+    end
+end
+
+NLCR.IncludeList({
     "bugfixes.lua",
     "spawnmenu_cl.lua",
     "lzwd_cl.lua",
