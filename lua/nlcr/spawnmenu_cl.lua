@@ -1,16 +1,16 @@
 local Spawnmenu = {}
 
-NLS.Spawnmenu = Spawnmenu
+NLCR.Spawnmenu = Spawnmenu
 
-local spawnmenu_node_nls
+local spawnmenu_node_nlcr
 
-hook.Add("PopulateContent", "NLS_Spawnmenu", function(content_panel, tree, tree_node)
+hook.Add("PopulateContent", "NLCR_Spawnmenu", function(content_panel, tree, tree_node)
     local container = vgui.Create("ContentContainer", content_panel)
     container:SetVisible(false)
 
-    spawnmenu_node_nls = tree:AddNode("#SERVER_NAME", "icon16/server.png")
-    spawnmenu_node_nls.ContentContainer = container
-    spawnmenu_node_nls.ContentPanel = content_panel
+    spawnmenu_node_nlcr = tree:AddNode("#SERVER_NAME", "icon16/server.png")
+    spawnmenu_node_nlcr.ContentContainer = container
+    spawnmenu_node_nlcr.ContentPanel = content_panel
 end)
 
 -- DTree_Node -> string (name) -> DTree_Node
@@ -19,7 +19,7 @@ local NodeChildren = {}
 -- 
 -- returns: DTree_Node (with .ContentContainer and .ContentPanel)
 local function GetCreateSubnode(root, name)
-    assert(spawnmenu_node_nls, "PopulateContent hook was not called yet or failed!")
+    assert(spawnmenu_node_nlcr, "PopulateContent hook was not called yet or failed!")
     
     local node_cache = NodeChildren[root]
     local node_cache_child = node_cache and node_cache[name]
@@ -41,7 +41,7 @@ local function GetCreateSubnode(root, name)
 end
 
 local function GetSubnode(path)
-    local cur_node = spawnmenu_node_nls
+    local cur_node = spawnmenu_node_nlcr
 
     for _, path_part in ipairs(path) do
         cur_node = cur_node[path_part]
@@ -176,7 +176,7 @@ function Spawnmenu.AddFiles(root_name, files)
 
     local root = {}
 
-    local root_node = GetCreateSubnode(spawnmenu_node_nls, "Файлы")
+    local root_node = GetCreateSubnode(spawnmenu_node_nlcr, "Файлы")
     root_node = GetCreateSubnode(root_node, root_name)
     root.RootNode = root_node
 
@@ -191,6 +191,6 @@ function Spawnmenu.AddFiles(root_name, files)
     AddToSpawnmenu(root_node, tree)
 end
 
-hook.Add("LzWD_OnMounted", "NLS_Spawnmenu", function(addon_name, files)
+hook.Add("LzWD_OnMounted", "NLCR_Spawnmenu", function(addon_name, files)
     Spawnmenu.AddFiles(string.Replace(addon_name,"\n", " "), files)
 end)

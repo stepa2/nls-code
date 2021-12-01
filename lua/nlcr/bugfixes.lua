@@ -21,7 +21,7 @@ if SERVER then
     }
 
     for hookname, hookfn in pairs(ENGINE_ENT_HOOKS) do
-        hook.Add(hookname, "NLS_Bugfix_Creator", hookfn)
+        hook.Add(hookname, "NLCR_Bugfix_Creator", hookfn)
     end
 
 end

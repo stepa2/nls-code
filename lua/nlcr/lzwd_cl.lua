@@ -1,13 +1,12 @@
-print("LzWD > Clientside init")
-
 -- game.AddParticles override
 
-local game_AddParticles = game.AddParticles
+game.AddParticles_Original = game.AddParticles
+
 local required_particles = {}
 
 function game.AddParticles(filename)
     if file.Exists(filename, "GAME") then
-        game_AddParticles(filename)
+        game.AddParticles_Original(filename)
     else
         required_particles[filename] = false
     end
@@ -16,7 +15,7 @@ end
 hook.Add("LzWD_OnMounted", "LzWD_Particles", function(name, files)
     for i, f in ipairs(files) do
         if required_particles[f] == false then
-            game_AddParticles(f)
+            game.AddParticles_Origina(f)
             required_particles[f] = true
         end
     end
@@ -45,12 +44,12 @@ end
 
 -- Caching
 
-local SAVED_ADDONS_DATA_FILE = "nls/lzwd/cache.txt"
-local SAVED_ADDONS_CACHE_DIR = "nls/lzwd/"
+local SAVED_ADDONS_DATA_FILE = "nlcr/lzwd/cache.txt"
+local SAVED_ADDONS_CACHE_DIR = "nlcr/lzwd/"
 
 local SavedAddonsData = {}
 
-file.CreateDir("nls/lzwd")
+file.CreateDir("nlcr/lzwd")
 
 local function ReadCacheDesc()
     SavedAddonsData = {}
@@ -136,7 +135,7 @@ hook.Add("InitPostEntity", "LzWD_InitPostEntity", function()
     PrintChat("Сейчас начнётся загрузка аддонов")
 
     timer.Simple(6, function()
-        RunConsoleCommand("lzwd_requestaddons")
+        RunConsoleCommand("lzwd_request_addons")
     end)
 end)
 
@@ -347,5 +346,3 @@ OnFinished = function()
 
     PrintChat("Завершено!")
 end
-
-print("LzWD > Clientside init finished")

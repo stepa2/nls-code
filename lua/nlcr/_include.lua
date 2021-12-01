@@ -12,9 +12,21 @@ end
 NLCR = {}
 
 local function IncludeAll(files)
-    for i, file in ipairs(files) do
-        AddCSLuaFile(file)
-        include(file)
+    for i, filename in ipairs(files) do
+        local ends_with_sv = string.EndsWith(filename, "_sv.lua")
+        local ends_with_cl = string.EndsWith(filename, "_cl.lua")
+        -- _sh.lua handled as *anything else*.lua
+
+        if not ends_with_sv and SERVER then
+            AddCSLuaFile(filename)
+        end
+
+        if  (ends_with_sv and SERVER) or
+            (ends_with_cl and CLIENT) or
+            (not ends_with_sv and not ends_with_cl)
+        then
+            include(filename)
+        end
     end
 end
 
