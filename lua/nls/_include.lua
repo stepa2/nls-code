@@ -8,20 +8,14 @@ if CLIENT then
     language.Add("SERVER_NAME", SERVER_NAME)
 end
 
-include("bugfixes.lua")
-
 include("servermenu.lua")
 
 include("gamemodes.lua")
 
 include("zadalbot.lua")
 
-if CLIENT then
-    include("lzwd_cl.lua")
-else
-    AddCSLuaFile("lzwd_cl.lua")
+if SERVER then
     include("lzwd_cfg_sv.lua")
-    include("lzwd_sv.lua")
 end
 
 if SERVER then
@@ -34,10 +28,4 @@ if SERVER then
     AddCSLuaFile("player_3dnick_cl.lua")
 else
     include("player_3dnick_cl.lua")
-end
-
-if SERVER then
-    AddCSLuaFile("spawnmenu_cl.lua")
-else
-    include("spawnmenu_cl.lua")
 end
