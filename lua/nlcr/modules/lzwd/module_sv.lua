@@ -2,7 +2,7 @@ util.AddNetworkString("LzWD_WorkshopAddons")
 util.AddNetworkString("LzWD_ClientMessage")
 
 -- The addons we need to send to player
-local AddonsDeferredRuntime = {}
+local AddonsDeferredRuntime = AddonsDeferredRuntime or {}
 local AddonsDeferredConfig = {}
 
 resource.AddWorkshopActual = resource.AddWorkshop
@@ -33,25 +33,35 @@ local function LoadConfig()
 end
 LoadConfig()
 
+local AddonsCache = nil
+local PrevCountRuntime = 0
+
+local function CacheSendAddons()
+    if AddonsCache ~= nil and PrevCountRuntime == table.Count(AddonsDeferredRuntime) then
+        return
+    end
+
+    PrevCountRuntime = table.Count(AddonsDeferredRuntime)
+    AddonsCache = table.Merge(table.Copy(AddonsDeferredConfig), AddonsDeferredRuntime)
+end
+
 concommand.Add("lzwd_request_addons", function(requester)
     if not IsValid(requester) then
         print("This concommand should only be run by players!")
         return
     end
 
-    if table.IsEmpty(AddonsDeferredRuntime) and table.IsEmpty(AddonsDeferredConfig) then return end
+    CacheSendAddons()
+
+
+    if table.IsEmpty(AddonsCache) then return end
 
     net.Start("LzWD_WorkshopAddons")
-        net.WriteUInt(table.Count(AddonsDeferredRuntime) +
-                      table.Count(AddonsDeferredConfig), 32)
+        net.WriteUInt(table.Count(AddonsCache), 32)
 
-        for workshopid, _ in pairs(AddonsDeferredRuntime) do
+        for workshopid, _ in pairs(AddonsCache) do
             net.WriteString(workshopid) -- As GLua does not supports 64-bit integers and addon ID will go over 32 bits (it is already >31 bit), 
                                         -- writing addon id as string is only futureproof way
-        end
-
-        for workshopid, _ in pairs(AddonsDeferredConfig) do
-            net.WriteString(workshopid)
         end
     net.Send(requester)
 end)
