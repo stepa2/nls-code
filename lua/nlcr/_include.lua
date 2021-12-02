@@ -67,9 +67,5 @@ function NLCR.IncludeDir(dir, recursive)
     end
 end
 
-NLCR.IncludeList({
-    "bugfixes.lua",
-    "spawnmenu_cl.lua",
-    "lzwd_cl.lua",
-    "lzwd_sv.lua"
-})
+NLCR.IncludeFile("configs.lua")
+NLCR.IncludeFile("modules.lua")

@@ -2,44 +2,36 @@ util.AddNetworkString("LzWD_WorkshopAddons")
 util.AddNetworkString("LzWD_ClientMessage")
 
 -- The addons we need to send to player
-local AddonsDeferred = {}
+local AddonsDeferredRuntime = {}
+local AddonsDeferredConfig = {}
 
 resource.AddWorkshopActual = resource.AddWorkshop
 
 resource.AddWorkshop = function(workshopid)
     assert(isstring(workshopid), "workshopid ("..tostring(workshopid)..") is not a string")
 
-    if AddonsDeferred[workshopid] == true then return end
+    if AddonsDeferredRuntime[workshopid] == true then return end
 
-    AddonsDeferred[workshopid] = true
+    AddonsDeferredRuntime[workshopid] = true
 end
 
 -- Config loading
 local CONFIG_FILE = "nlcr/lzwd_config.lua"
 
-local function LoadConfig(clear_all)
+local function LoadConfig()
     -- If error happens here, add LzWD config file
-    local cfg = NLCR.IncludeFile(CONFIG_FILE)
-
-    if clear_all then
-        AddonsDeferred = {}
-    end
+    local cfg = NLCR.Config.Get("core_lzwd")
+    assert(cfg ~= nil, "Missing LzWD configuration!")
 
     for _, wsid in ipairs(assert(cfg.Deferred)) do
-        AddonsDeferred[wsid] = true
+        AddonsDeferredConfig[wsid] = true
     end
 
     for _, wsid in ipairs(assert(cfg.Connection)) do
         resource.AddWorkshopActual(wsid)
     end
 end
-
-LoadConfig(false)
-
-concommand.Add("lzwd_reload_config", function(_,_,args)
-    LoadConfig(tobool(args[1]))
-end, nil, "Reloads LzWD addons config (lua/"..CONFIG_FILE..").\n"..
-        "If called with true or 1, previously-loaded addons are not keeped")
+LoadConfig()
 
 concommand.Add("lzwd_request_addons", function(requester)
     if not IsValid(requester) then
@@ -47,14 +39,19 @@ concommand.Add("lzwd_request_addons", function(requester)
         return
     end
 
-    if table.IsEmpty(AddonsDeferred) then return end
+    if table.IsEmpty(AddonsDeferredRuntime) and table.IsEmpty(AddonsDeferredConfig) then return end
 
     net.Start("LzWD_WorkshopAddons")
-        net.WriteUInt(table.Count(AddonsDeferred), 32)
+        net.WriteUInt(table.Count(AddonsDeferredRuntime) +
+                      table.Count(AddonsDeferredConfig), 32)
 
-        for workshopid, _ in pairs(AddonsDeferred) do
+        for workshopid, _ in pairs(AddonsDeferredRuntime) do
             net.WriteString(workshopid) -- As GLua does not supports 64-bit integers and addon ID will go over 32 bits (it is already >31 bit), 
                                         -- writing addon id as string is only futureproof way
+        end
+
+        for workshopid, _ in pairs(AddonsDeferredConfig) do
+            net.WriteString(workshopid)
         end
     net.Send(requester)
 end)
