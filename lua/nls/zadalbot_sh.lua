@@ -1,5 +1,3 @@
-AddCSLuaFile()
-
 if SERVER then
     util.AddNetworkString("NLS_PlayerReady")
     util.AddNetworkString("NLS_ZadalBot_Message")

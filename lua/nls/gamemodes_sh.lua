@@ -1,5 +1,3 @@
-AddCSLuaFile()
-
 if SERVER then
     util.AddNetworkString("NLS_Gamemode_Changed")
 end

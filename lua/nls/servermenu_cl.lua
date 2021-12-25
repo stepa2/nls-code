@@ -1,8 +1,3 @@
-if SERVER then
-    AddCSLuaFile()
-    return
-end
-
 language.Add("NLS_Category_Modes", "Режимы")
 language.Add("NLS_CategoryMode_Build", "Режим строительства")
 language.Add("NLS_CategoryMode_PVP", "Режим боя (PVP)")

@@ -1,8 +1,24 @@
-print("NLS > Initialization started "..(CLIENT and "clientside" or "serverside"))
+SERVER_NAME = "NLS"
+SERVER_NAME_COLOR = Color(128,0,255)
+NLS = {}
 
-include("nls/_include.lua")
+if CLIENT then
+    language.Add("SERVER_NAME", SERVER_NAME)
+end
 
-print("NLS > Initialization finished")
+local function Startup()
+    print("NLS > Initialization started "..(CLIENT and "clientside" or "serverside"))
+    NLCR.IncludeDir("nls/")
+    print("NLS > Initialization finished")
+
+    hook.Run("NLS.AfterInit")
+end
+
+if NLCR == nil then
+    hook.Add("NLCR.AfterInit", "NLS.Startup", Startup)
+else
+    Startup()
+end
 
 --[[
 
