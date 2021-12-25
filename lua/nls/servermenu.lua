@@ -18,7 +18,7 @@ TODO: про бой без правил
 language.Add("NLS_Mode_PVP_Switch", "Переключиться в режим боя")
 
 language.Add("NLS_Mode_RP_Switch", "Переключиться в ролевой режим")
-language.Add("NLS_Mode_RP_Desc", "Ролевой режим - ещё не реализован")
+language.Add("NLS_Mode_RP_Desc", "Ролевой режим")
 
 language.Add("NLS_Category_Info", "Информация")
 language.Add("NLS_CategoryInfo_Links", "Ссылки")
@@ -46,7 +46,7 @@ hook.Add("PopulateToolMenu", "NLS_Servermenu", function()
     spawnmenu.AddToolMenuOption("aNLS", "Modes", "RP", "#NLS_CategoryMode_RP", nil, nil, function(panel)
         panel:Help("#NLS_Mode_RP_Desc")
         panel:Button("#NLS_Mode_RP_Switch", "nls_changemode", "RP")
-        panel:Button("#NLS_Mode_RP_CreateSession")
+        --panel:Button("#NLS_Mode_RP_CreateSession")
     end)
 
     spawnmenu.AddToolMenuOption("aNLS", "Info", "Links", "#NLS_CategoryInfo_Links", nil, nil, function(panel)
@@ -58,6 +58,8 @@ hook.Add("PopulateToolMenu", "NLS_Servermenu", function()
             gui.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=2541972502")
         end
 
-        panel:Help("Правила сервера в discord-группе (канал 'правила')")
+        panel:Button("Правила сервера").DoClick = function(self)
+            gui.OpenURL("https://docs.google.com/document/d/14gc3uAComDs2fsUPW0Z1gBRWF7TVXRmdWvHAJ99Z-go")
+        end
     end)
 end)
