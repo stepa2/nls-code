@@ -19,11 +19,13 @@ end
 
 local function LoadModuleDir(dir, name, no_include_root)
     ContextStart(name)
-        hook.Add("NLCR.LoadModuleDir", dir, name)
+        hook.Run("NLCR.PreLoadModuleDir", dir, name)
 
         if not no_include_root then
             NLCR.IncludeFile(dir..MODULE_DIR_INCLUDEROOT)
         end
+
+        hook.Run("NLCR.PostLoadModuleDir", dir, name)
     ContextEnd()
 end
 
@@ -63,7 +65,7 @@ local function LoadModules()
 
 end
 
-hook.Add("NLCR.LoadModuleDir", "NLCR.LibsLoader", function(dir)
+hook.Add("NLCR.PreLoadModuleDir", "NLCR.LibsLoader", function(dir)
     do
         local _, dirs = file.Find(dir.."*", "LUA")
         if not table.HasValue(dirs, "libs") then return end
