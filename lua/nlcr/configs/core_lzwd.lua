@@ -90,5 +90,7 @@ return {
         "2639959090", -- Manable Emplacements
         "2455542073", -- Soviet Electronics Prop Pack (SnowDrop Escape)
         --"2555075836", -- Combine Interface Remake [REPLACER]
+        "2690914262", -- Crunchy's Ultimate Item Pickups
+        "2639090544", -- CONRED ПропПак [BETA]
     }
 }
