@@ -113,8 +113,8 @@ if SERVER then
         --    return false
         --end
 
-        local targetPly = GetDamageRelatedPlayer(target, function() end)
-        local damagerPly = GetDamageRelatedPlayer(damager, print)
+        local targetPly = GetDamageRelatedPlayer(target)
+        local damagerPly = GetDamageRelatedPlayer(damager)
 
         if damagerPly == nil then
             return
@@ -163,6 +163,25 @@ if SERVER then
             return true
         end
     end)
+
+    local function RegisterACFDamageMode()
+        ACF.Permissions.RegisterMode(function(_, attacker, target)
+            return TakeDamageBy(target, attacker)
+        end, "nls_gm", "Режим урона, совместимый с игровыми режимами NLS",
+            true, nil, false) -- Is default?, Think function, Do damage when one of players is logging out?
+    end
+
+    if ACF ~= nil then
+        RegisterACFDamageMode()
+    else
+        timer.Simple(0, function()
+            if ACF ~= nil then
+                RegisterACFDamageMode()
+            else
+                print("NLS > Gamemodes > Not detected ACF")
+            end
+        end)
+    end
 end
 
 
