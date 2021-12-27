@@ -307,7 +307,7 @@ LoadAllAddons = function(addonsBySize)
                 end
             end, function()
                 PrintChat("Ошибка при скачивании аддона "..wid)
-                PrintChat("Для ручного перезапуска закачки введите lzwd_requestaddons в консоль")
+                PrintChat("Для ручного перезапуска закачки введите lzwd_request_addons в консоль")
                 remainingCount = remainingCount - 1
             end)
         else
