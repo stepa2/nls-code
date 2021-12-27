@@ -15,7 +15,7 @@ end
 hook.Add("LzWD_OnMounted", "LzWD_Particles", function(name, files)
     for i, f in ipairs(files) do
         if required_particles[f] == false then
-            game.AddParticles_Origina(f)
+            game.AddParticles_Original(f)
             required_particles[f] = true
         end
     end
