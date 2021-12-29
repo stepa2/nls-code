@@ -93,5 +93,6 @@ return {
         "2690914262", -- Crunchy's Ultimate Item Pickups
         "2639090544", -- CONRED ПропПак [BETA]
         "2512558788", -- Armored Combat Extended [OFFICIAL]
+        "2434394990", -- Spacebuild 3 Enchancement Pack unofficial update 
     }
 }
