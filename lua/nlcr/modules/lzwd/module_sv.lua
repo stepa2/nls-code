@@ -30,6 +30,12 @@ local function LoadConfig()
     for _, wsid in ipairs(assert(cfg.Connection)) do
         resource.AddWorkshopActual(wsid)
     end
+
+    local mapname = string.lower(game.GetMap())
+
+    for _, wsid in ipairs((cfg.ConnectionMaps or {})[mapname] or {}) do
+        resource.AddWorkshopActual(wsid)
+    end
 end
 LoadConfig()
 
