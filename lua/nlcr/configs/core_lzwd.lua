@@ -24,6 +24,106 @@ return {
         "2458909924", -- Prop2Mesh
         "2414556240", -- Advanced Material 2
     },
+    ConnectionMaps = {
+        gm_bigcity_improved = {
+            "815782148", -- gm_bigcity_improved
+        },
+        gm_freespace_13 = {
+            "115510325", -- Freespace 13
+        },
+        gm_fork = {
+            "326332456", -- gm_fork
+        },
+        gm_novenka = {
+            "2049617805", -- gm_novenka
+        },
+        rp_darkscape = {
+            "2272131829", -- Darkscape
+        },
+        rp_outercanals = {
+            "119420070", -- rp_outercanals
+        },
+        -- "2436746696", -- GM Deep Blue | An Ocean Sandbox Map
+        gm_excess_islands = {
+            "115250988", -- gm_excess_islands
+        },
+        gm_goldencity_v2 = {
+            "2501718455", -- gm_goldencity_v2
+        },
+        gm_boreas = {
+            "1572373847", -- gm_boreas
+        },
+        gm_vyten = {
+            "1449731878", -- gm_vyten
+        },
+        rp_apocalypse = {
+            "104522041", -- rp_apocalypse
+        },
+        rp_apocalypse_remaster = {
+            "2241746053", -- rp_apocalypse_remaster
+        },
+        gm_russia = {
+            "2634728857", -- gm_russia
+        },
+        gm_goldencity_v2_day = {
+            "2637442004", -- gm_goldencity_v2_day
+        },
+        gm_shambles = {
+            "151544081", -- gm_Shambles
+        },
+        gm_shambles_day = {
+            "191110821", -- gm_Shambles_day
+        },
+        rp_ineu_valley_2 = {
+            "232486601", -- RP Ineu Valley 2
+        },
+        rp_ineu_valley = {
+            "129218683", -- RP Ineu Valley
+        },
+        rp_c8_edit_v3b = {
+            "788514527", -- rp_c8_edit_v3b
+            "1406336883", -- C8 V3b Content Pack
+        },
+        rp_whiteforest_v1 = {
+            "1092866261", -- rp_whiteforest_v1
+        },
+        gm_genesis = {
+            "266666023", -- gm_genesis
+        },
+        gm_sn_waterside = {
+            "380423212", -- gm_sn_waterside - SN Waterside
+        },
+        rp_suo = {
+            "107278524", -- Rp_Suo
+        },
+        rp_salvation = {
+            "446568070", -- rp_salvation
+        },
+        gm_valley = {
+            "104483504", -- gm_Valley
+        },
+        gm_marsh = {
+            "878761545", -- GM_MARSH
+        },
+        rp_limansk_cs = {
+            "1832136981", -- Лиманск (Чистое Небо)
+        },
+        gm_arid_valley_v2_day = {
+            "510346779", -- GM Arid Valley V2 Day
+        },
+        gm_arid_valley_v2_night = {
+            "510347812", -- GM Arid Valley V2 Night
+        },
+        rp_industrial17_v1 = {
+            "171962560", -- rp_industrial17_v1
+        },
+        gm_vault = {
+            "2668557938", -- GM Vault
+        },
+        rp_outercanals_winter = {
+            "107641602", -- rp_outercanals_winter
+        }
+    },
     Deferred = {
         "422672588", -- Fortification Props Model Pack
         "430077474", -- ZONA Stalker Props Pack [1/4] [Base]
@@ -84,13 +184,11 @@ return {
         --"1163787295", -- [VJ]BLACK MESA Expand NPC:XEN&Vehicles
         --"1255758317", -- Black Mesa Expand NPC (Models pack2)
         --"1255726751", -- Black mesa expand npc (models pack1)
-        "1406336883", -- C8 V3b Content Pack
         "860373684", -- [simfphys] HL2 Pre-war vehicles Reworked
         --"1773030130", -- [VJ] Melee Weapons
         "2639959090", -- Manable Emplacements
         "2455542073", -- Soviet Electronics Prop Pack (SnowDrop Escape)
         --"2555075836", -- Combine Interface Remake [REPLACER]
-        "2690914262", -- Crunchy's Ultimate Item Pickups
         "2639090544", -- CONRED ПропПак [BETA]
         "2512558788", -- Armored Combat Extended [OFFICIAL]
         "2434394990", -- Spacebuild 3 Enchancement Pack unofficial update 
