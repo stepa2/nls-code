@@ -11,10 +11,8 @@ return {
         "2131058270", -- [ArcCW] Counter-Strike +
         "2180241115", -- [ArcCW] (Unofficial) Counter-Strike ++
         "2175261690", -- [ArcCW] FA:S1 Reanimated
-        --"131759821", -- VJ Base
+        "131759821", -- VJ Base
         "213515639", -- Emplacements
-        --"822075881", -- Groundwatch
-        --"741788352", -- Airwatch
         "160250458", -- Wiremod
         "420325009", -- MeshCloth
         "104691717", -- PAC3
@@ -23,6 +21,9 @@ return {
         "1615992780", -- ProWolf's Zone Tool
         "2458909924", -- Prop2Mesh
         "2414556240", -- Advanced Material 2
+        "1771608619", -- Arctic's Vehicle Extension
+        "1940264801", -- Multiple Advanced RT Cameras
+        "104486597", -- NPC Tools
     },
     ConnectionMaps = {
         gm_bigcity_improved = {
@@ -142,7 +143,7 @@ return {
         --"2015077130", -- Half-Life Alyx Buildings
         "2415018270", -- [Half Life: Alyx] Combine Props
         --"2088387376", -- Half-Life: Alyx - Interior prop's pack
-        --q"2062854187", -- Half-Life: Alyx - city 17 props
+        --"2062854187", -- Half-Life: Alyx - city 17 props
         "2043900984", -- [Half Life: Alyx] Infestation Control props
         --"2216838577", -- [Half Life: Alyx] Consumables Misc (Props)
         "2228994615", -- [Half Life: Alyx] Xen Pack (Props)
@@ -167,15 +168,15 @@ return {
         "284266415", -- Sci-fi Props Megapack
         --"566678693", -- Half-life 2+ SNPCs
         --"106466767", -- Neo Heavy Combine
-        --"1187432060", -- [VJ Base] Assault Synth SNPC
-        --"1358179694", -- [VJ Base] Combine Synth Soldier NPCs
+        "1187432060", -- [VJ Base] Assault Synth SNPC
+        "1358179694", -- [VJ Base] Combine Synth Soldier NPCs
         --"1416951128", -- Civilians NPCs (VJ)
         --"2051259080", -- [VJ] Headcrab Infection System
-        --"2548809283", -- Half-Life Resurgence
+        "2548809283", -- Half-Life Resurgence
         --"1536251090", -- S.T.A.L.K.E.R. Anomalies
         --"2485183074", -- [VJ] S.T.A.L.K.E.R. "Аномалии"
-        --"2052642961", -- SNPC Particle Resource Pack
-        --"2168210817", -- Half-Life Alyx: Antlions
+        "2052642961", -- SNPC Particle Resource Pack
+        "2168210817", -- Half-Life Alyx: Antlions
         --"1470158687", -- Full Integrated Animation P.M. for NPCs HL2
         --"1839725372", -- [VJ] HλLF - LIFE ³ SNPCs
         --"173344427", -- Black Mesa SNPCs
@@ -192,5 +193,15 @@ return {
         "2639090544", -- CONRED ПропПак [BETA]
         "2512558788", -- Armored Combat Extended [OFFICIAL]
         "2434394990", -- Spacebuild 3 Enchancement Pack unofficial update 
+        "822075881", -- Groundwatch
+        "741788352", -- Airwatch
+        "2726040766", -- [LFS] HAUNEBU
+        "1863383098", -- [LFS] Huey Gunship
+        "2146048057", -- [LFS] UH1 PACK
+        "2430517668", -- [LFS/prop] Ceph Scout
+        "2361275266", -- Stalker Vehicles Pack
+        "2199678187", -- [simfphys] AGR
+        "2126097529", -- [simfphys] IVECO pack
+        "2163922384", -- [simfphys] BTR 80/80A
     }
 }
