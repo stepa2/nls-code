@@ -32,20 +32,26 @@ if SERVER then
     LoadConfig()
 
     local function SendDataToBot(data)
+        local done = false
+
         HTTP({
             url = Config.BotAddress,
             method = "POST",
             body = util.TableToJSON(data),
             success = function(code)
                 if code ~= 200 then MsgN("NLS > ZadalBot > Error sending data (code ",code,")") end
+                done = true
             end,
             failed = function(reason)
+                if done then return end
                 MsgN("NLS > ZadalBot > Error sending data: ",reason)
             end
         })
     end
 
     local function RecvDataFromBot(callback)
+        local done = false
+
         HTTP({
             url = Config.BotAddress,
             method = "GET",
@@ -53,10 +59,12 @@ if SERVER then
                 if code ~= 200 then
                     MsgN("NLS > ZadalBot > Error receiving data (code ",code,")")
                 else
+                    done = true
                     callback(util.JSONToTable(body))
                 end
             end,
             failed = function(reason)
+                if done then return end
                 MsgN("NLS > ZadalBot > Error receiving data: ",reason)
             end
         })
