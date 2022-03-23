@@ -26,7 +26,7 @@ if SERVER then
             if ACF ~= nil then
                 ReplaceACFFuncs()
             else
-                print("NLS > Bugfixes > Not detected ACF")
+                print("NLCR Bugfixes > Not detected ACF")
             end
         end)
     end

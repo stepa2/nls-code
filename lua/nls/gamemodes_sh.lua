@@ -178,7 +178,7 @@ if SERVER then
             if ACF ~= nil then
                 RegisterACFDamageMode()
             else
-                print("NLS > Gamemodes > Not detected ACF")
+                print("NLS Gamemodes > Not detected ACF")
             end
         end)
     end

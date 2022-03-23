@@ -8,21 +8,21 @@ if SERVER then
     local function LoadConfig()
         local cfgRaw = file.Read("nls/zadalbot.json", "DATA")
 
-        MsgN("NLS > ZadalBot > Loading config")
+        MsgN("NLS ZadalBot > Loading config")
 
         if cfgRaw == nil then
-            MsgN("NLS > ZadalBot > Config file missing")
+            MsgN("NLS ZadalBot > Config file missing")
             return 
         end
 
         local config = util.JSONToTable(cfgRaw)
 
         if config == nil then
-            MsgN("NLS > ZadalBot > Config file has invalid contents")
+            MsgN("NLS ZadalBot > Config file has invalid contents")
             return 
         end
     
-        MsgN("NLS > ZadalBot > Config loaded")
+        MsgN("NLS ZadalBot > Config loaded")
 
         Config = config
         assert(Config.BotAddress, "Bot addess unspecified!")
@@ -39,12 +39,12 @@ if SERVER then
             method = "POST",
             body = util.TableToJSON(data),
             success = function(code)
-                if code ~= 200 then MsgN("NLS > ZadalBot > Error sending data (code ",code,")") end
+                if code ~= 200 then MsgN("NLS ZadalBot > Error sending data (code ",code,")") end
                 done = true
             end,
             failed = function(reason)
                 if done then return end
-                MsgN("NLS > ZadalBot > Error sending data: ",reason)
+                MsgN("NLS ZadalBot > Error sending data: ",reason)
             end
         })
     end
@@ -57,7 +57,7 @@ if SERVER then
             method = "GET",
             success = function(code, body)
                 if code ~= 200 then
-                    MsgN("NLS > ZadalBot > Error receiving data (code ",code,")")
+                    MsgN("NLS ZadalBot > Error receiving data (code ",code,")")
                 else
                     done = true
                     callback(util.JSONToTable(body))
@@ -65,7 +65,7 @@ if SERVER then
             end,
             failed = function(reason)
                 if done then return end
-                MsgN("NLS > ZadalBot > Error receiving data: ",reason)
+                MsgN("NLS ZadalBot > Error receiving data: ",reason)
             end
         })
     end
@@ -84,13 +84,13 @@ if SERVER then
                 msg = msg.."\n"..table.concat(attachments, "\n")
             end
     
-            MsgN("NLS > ZadalBot message > ", msg)
+            MsgN("NLS ZadalBot message > ", msg)
 
             net.Start("NLS_ZadalBot_Message")
                 net.WriteString(msg)
             net.Broadcast()
         else
-            MsgN("NLS > ZadalBot > Invald data type from bot: ", type)
+            MsgN("NLS ZadalBot > Invald data type from bot: ", type)
         end
     end
     

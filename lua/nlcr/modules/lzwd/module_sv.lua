@@ -73,5 +73,5 @@ concommand.Add("lzwd_request_addons", function(requester)
 end)
 
 net.Receive("LzWD_ClientMessage", function(len, ply)
-    MsgN("LzWD > ",ply:Nick()," message: ", net.ReadString())
+    MsgN("NLCR LzWD > ",ply:Nick()," message: ", net.ReadString())
 end)
