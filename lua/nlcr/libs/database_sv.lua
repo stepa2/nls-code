@@ -7,6 +7,11 @@ local function Connect()
         cfg = { Adapter = "sqlite" }
     end
 
+    if cfg.Adapter == "disabled" then
+        print("NLCR Database > disabled in config")
+        return
+    end
+
     NLCR.DB:SetModule(cfg.Adapter)
     NLCR.DB:Connect(cfg.Host, cfg.User, cfg.Password, cfg.DatabaseName, cfg.Port)
 end
